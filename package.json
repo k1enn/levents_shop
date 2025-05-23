@@ -1,0 +1,14 @@
+{
+  "name": "proshop",
+  "version": "1.0.0",
+  "description": "Learn MERN",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server"
+  },
+  "author": "Trung Kien",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
