@@ -5,9 +5,17 @@ const reviewSchema = mongoose.Schema(
     name: { type: String, required: true },
     rating: { type: Number, required: true },
     comment: { type: String, required: true },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
   },
-  { timestamp: true }
+  {
+    timestamps: true,
+  }
 );
+
 const productSchema = mongoose.Schema(
   {
     user: {
@@ -15,9 +23,18 @@ const productSchema = mongoose.Schema(
       required: true,
       ref: "User",
     },
-    name: { type: String, required: true },
-    image: { type: String, required: true },
-    brand: { type: String, required: true },
+    name: {
+      type: String,
+      required: true,
+    },
+    image: {
+      type: String,
+      required: true,
+    },
+    brand: {
+      type: String,
+      required: true,
+    },
     category: {
       type: String,
       required: true,
@@ -26,7 +43,6 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    // We could but this into another file but it small enough to integrated
     reviews: [reviewSchema],
     rating: {
       type: Number,
@@ -49,7 +65,9 @@ const productSchema = mongoose.Schema(
       default: 0,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
 const Product = mongoose.model("Product", productSchema);

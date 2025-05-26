@@ -26,7 +26,7 @@ app.get("/api/products/:id", (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-// Init port is 5000 (enviroment variable later)
+// Init port is 5000 (environment variable later)
 app.listen(
   PORT,
   console.log(
