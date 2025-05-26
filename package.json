@@ -13,6 +13,7 @@
   "author": "Trung Kien",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "colors": "^1.4.0",
     "concurrently": "^9.1.2",
     "dotenv": "^16.5.0",
