@@ -3,12 +3,21 @@
   "version": "1.0.0",
   "description": "Learn MERN",
   "main": "server.js",
+  "type": "module",
   "scripts": {
-    "start": "node backend/server"
+    "start": "node backend/server",
+    "server": "nodemon backend/server",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Trung Kien",
   "license": "ISC",
   "dependencies": {
-    "express": "^5.1.0"
+    "colors": "^1.4.0",
+    "concurrently": "^9.1.2",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.15.1",
+    "nodemon": "^3.1.10"
   }
 }
