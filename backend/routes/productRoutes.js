@@ -11,7 +11,6 @@ router.get(
   asyncHandler(async (req, res) => {
     // Async to use await
     const products = await Product.find({}); // Return a promise, instead i use await
-
     res.json(products); // It will get convert to JSON
   })
 );
