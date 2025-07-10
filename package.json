@@ -1,7 +1,7 @@
 {
   "name": "proshop",
   "version": "1.0.0",
-  "description": "Learn MERN",
+  "description": "MERN shopping cart app",
   "main": "server.js",
   "type": "module",
   "scripts": {
@@ -12,17 +12,18 @@
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d"
   },
-  "author": "Trung Kien",
-  "license": "ISC",
+  "author": "Brad Traversy",
+  "license": "MIT",
   "dependencies": {
-    "bcryptjs": "^3.0.2",
+    "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
-    "concurrently": "^9.1.2",
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "express-async-handler": "^1.2.0",
-    "mongodb": "^6.17.0",
-    "mongoose": "^8.15.1",
-    "nodemon": "^3.1.10"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "mongoose": "^5.10.6"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.4"
   }
 }
