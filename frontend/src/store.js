@@ -18,8 +18,8 @@ const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
 
-// Get cart item and later on have a token in a initial state
 const initialState = {
+  // Get cart item and later on have a token in a initial state
   cart: { cartItems: cartItemsFromStorage },
 };
 

@@ -24,6 +24,7 @@ const CartScreen = ({ match, location, history }) => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
+  // Update whenever productId or quantity change
   useEffect(() => {
     if (productId) {
       dispatch(addToCart(productId, qty));
