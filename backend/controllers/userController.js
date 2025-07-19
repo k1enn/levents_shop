@@ -9,17 +9,18 @@ import generateToken from "../utils/generateToken.js";
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  // Find matching email
   const user = await User.findOne({ email });
 
-  // Check password &  user existed
   if (user && (await user.matchPassword(password))) {
+    // Generate token
+    const token = generateToken(user._id);
+
     res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      token: generateToken(user._id),
+      token: token, // Send token in response
     });
   } else {
     res.status(401);
@@ -27,4 +28,22 @@ const authUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser };
+// @desc    Get user profile
+// @route   GET /api/users/profile
+// @access  Private
+const getUserProfile = asyncHandler(async (req, res) => {
+  // Check if req.user exists (should be set by protect middleware)
+  if (!req.user) {
+    res.status(401);
+    throw new Error("User not found in request");
+  }
+
+  res.json({
+    _id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+    isAdmin: req.user.isAdmin,
+  });
+});
+
+export { authUser, getUserProfile };
