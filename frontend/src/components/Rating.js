@@ -1,75 +1,29 @@
-import React from 'react'
+import React from "react";
+import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 
-const Rating = ({ value, text, color }) => {
+const Rating = ({ value, text, color = "#f8e825", size = "normal" }) => {
+  const starSize = size === "small" ? "0.6rem" : "0.75rem";
+
   return (
-    <div className='rating'>
-      <span>
-        <i
-          style={{ color }}
-          className={
-            value >= 1
-              ? 'fas fa-star'
-              : value >= 0.5
-              ? 'fas fa-star-half-alt'
-              : 'far fa-star'
-          }
-        ></i>
+    <div className="rating d-flex align-items-center justify-content-end">
+      <span className="stars" style={{ fontSize: starSize }}>
+        {[1, 2, 3, 4, 5].map((star) => (
+          <span key={star} style={{ color }}>
+            {value >= star ? (
+              <FaStar />
+            ) : value >= star - 0.5 ? (
+              <FaStarHalfAlt />
+            ) : (
+              <FaRegStar />
+            )}
+          </span>
+        ))}
       </span>
-      <span>
-        <i
-          style={{ color }}
-          className={
-            value >= 2
-              ? 'fas fa-star'
-              : value >= 1.5
-              ? 'fas fa-star-half-alt'
-              : 'far fa-star'
-          }
-        ></i>
-      </span>
-      <span>
-        <i
-          style={{ color }}
-          className={
-            value >= 3
-              ? 'fas fa-star'
-              : value >= 2.5
-              ? 'fas fa-star-half-alt'
-              : 'far fa-star'
-          }
-        ></i>
-      </span>
-      <span>
-        <i
-          style={{ color }}
-          className={
-            value >= 4
-              ? 'fas fa-star'
-              : value >= 3.5
-              ? 'fas fa-star-half-alt'
-              : 'far fa-star'
-          }
-        ></i>
-      </span>
-      <span>
-        <i
-          style={{ color }}
-          className={
-            value >= 5
-              ? 'fas fa-star'
-              : value >= 4.5
-              ? 'fas fa-star-half-alt'
-              : 'far fa-star'
-          }
-        ></i>
-      </span>
-      <span>{text && text}</span>
+      {text && (
+        <span className="rating-text small text-muted ms-1">{text}</span>
+      )}
     </div>
-  )
-}
+  );
+};
 
-Rating.defaultProps = {
-  color: '#f8e825',
-}
-
-export default Rating
+export default Rating;
