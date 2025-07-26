@@ -27,7 +27,7 @@ const HomeScreen = () => {
         <Banner />
       </div>
       <Container>
-        <h1 className="mb-4 text-center">Latest Products</h1>
+        <h1 className="mb-4 pt-5 pb-2 text-center">Sản Phẩm Mới</h1>
         {loading ? (
           <Loader />
         ) : error ? (

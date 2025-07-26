@@ -13,7 +13,7 @@ const App = () => {
   return (
     <Router>
       <Header />
-      <main className="py-3">
+      <main className="py-0">
         <Container>
           <Route path="/register" component={RegisterScreen} />
           <Route path="/login" component={LoginScreen} />
