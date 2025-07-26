@@ -38,6 +38,7 @@ const productSchema = mongoose.Schema(
     category: {
       type: String,
       required: true,
+      enum: ["female", "male", "jacket", "accessory"],
     },
     description: {
       type: String,
@@ -48,21 +49,26 @@ const productSchema = mongoose.Schema(
       type: Number,
       required: true,
       default: 0,
+      min: 0,
+      max: 5,
     },
     numReviews: {
       type: Number,
       required: true,
       default: 0,
+      min: 0,
     },
     price: {
       type: Number,
       required: true,
       default: 0,
+      min: 0,
     },
     countInStock: {
       type: Number,
       required: true,
       default: 0,
+      min: 0,
     },
     isActive: {
       type: Boolean,

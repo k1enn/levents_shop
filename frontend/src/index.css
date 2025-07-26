@@ -107,3 +107,16 @@ h2 {
     height: 200px;
   }
 }
+
+/*CATEGORY BAR*/
+.category-bar-container {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border: none; 
+}
+
+.nav-pills .nav-link:hover {
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
+}
