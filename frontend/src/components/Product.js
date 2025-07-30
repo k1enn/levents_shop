@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Card, Row, Col } from "react-bootstrap";
 import Rating from "./Rating";
 
+// NOTE: Aware of custom CSS when edit this
 const Product = ({ product }) => {
   return (
     <Card className="my-1 mx-0 px-0 py-3 product-card">

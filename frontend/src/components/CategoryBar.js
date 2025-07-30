@@ -15,7 +15,6 @@ const CategoryBar = ({ activeCategory, onCategoryChange }) => {
     <div className="category-bar-container bg-light py-3 mb-4">
       <div className="container">
         <Nav
-          variant="pills"
           activeKey={activeCategory}
           className="d-flex justify-content-center"
           onSelect={onCategoryChange}
@@ -27,7 +26,7 @@ const CategoryBar = ({ activeCategory, onCategoryChange }) => {
                 className="px-4 py-2 text-center"
                 style={{
                   backgroundColor:
-                    activeCategory === category.key ? "#000000ff" : "#00000002",
+                    activeCategory === category.key ? "#000000ff" : "#00000004",
                   color: activeCategory === category.key ? "white" : "black",
                   borderRadius: "8px",
                   border: "none",
@@ -36,8 +35,9 @@ const CategoryBar = ({ activeCategory, onCategoryChange }) => {
                       ? "0 4px 8px rgba(0, 0, 0, 0.3)"
                       : "none",
                   fontWeight: "500",
-                  width: "120px",
-                  minWidth: "120px",
+                  minWidth: 60,
+                  padding: "1rem",
+                  width: 120,
                   textAlign: "center",
                 }}
               >

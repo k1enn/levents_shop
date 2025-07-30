@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, useLocation } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -9,11 +9,16 @@ import CartScreen from "./screens/CartScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 
-const App = () => {
+const AppContent = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
+
   return (
-    <Router>
+    <>
       <Header />
-      <main className="py-0">
+      <main className={isHomePage ? "" : "py-3"}>
+        {" "}
+        {/* Skip padding vertically only for HomeScreen because banner conflict */}
         <Container>
           <Route path="/register" component={RegisterScreen} />
           <Route path="/login" component={LoginScreen} />
@@ -23,6 +28,14 @@ const App = () => {
         </Container>
       </main>
       <Footer />
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 };

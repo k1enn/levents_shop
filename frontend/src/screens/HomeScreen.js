@@ -26,8 +26,6 @@ const HomeScreen = () => {
     }
 
     return products.filter((product) => {
-      // Assuming your product object has a 'category' field
-      // Adjust this logic based on your actual product data structure
       return product.category?.toLowerCase() === activeCategory.toLowerCase();
     });
   };
@@ -48,6 +46,9 @@ const HomeScreen = () => {
         <Banner />
       </div>
 
+      {/* Add spacing to account for fixed category bar */}
+      <div style={{ height: "80px" }}></div>
+
       {/* Product container */}
       <Container>
         <h1 className="mb-4 pt-5 pb-2 text-center">Khám Phá Ngay</h1>
@@ -56,6 +57,7 @@ const HomeScreen = () => {
           activeCategory={activeCategory}
           onCategoryChange={handleCategoryChange}
         />
+
         {loading ? (
           <Loader />
         ) : error ? (
