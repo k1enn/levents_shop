@@ -1,14 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col, Badge } from "react-bootstrap";
 import Rating from "./Rating";
+import { saleUtils } from "../utils/saleUtils";
 
 // NOTE: Aware of custom CSS when edit this
 const Product = ({ product }) => {
+  // Get sale information
+  const saleInfo = saleUtils.getSaleInfo(product);
+  const isOnSale = saleUtils.isProductOnSale(product);
+  const isSaleEndingSoon = saleUtils.isSaleEndingSoon(product);
+  const daysRemaining = saleUtils.getDaysRemaining(product);
+
+  // Format price in VND
+  const formatVND = (price) => {
+    return new Intl.NumberFormat("vi-VN").format(price);
+  };
+
   return (
     <Card className="my-1 mx-0 px-0 py-3 product-card">
       <Link to={`/product/${product._id}`} className="text-decoration-none">
-        <div className="product-image-wrapper">
+        <div className="product-image-wrapper position-relative">
           <Card.Img
             src={product.image}
             variant="top"
@@ -34,9 +46,32 @@ const Product = ({ product }) => {
           </Col>
         </Row>
 
-        <Card.Text className="pt-4 product-price">
-          Giá: {product.price} VND
-        </Card.Text>
+        {/* Price Section */}
+        <div className="pt-4 product-price">
+          {isOnSale ? (
+            <div className="price-section">
+              <div>
+                <span className="fw-bold">
+                  Giá: {formatVND(saleInfo.salePrice)} VND
+                </span>
+                <span
+                  className="original-price text-muted"
+                  style={{
+                    textDecoration: "line-through",
+                    fontSize: "0.85em",
+                    padding: "0.6rem",
+                  }}
+                >
+                  {formatVND(saleInfo.originalPrice)} VND
+                </span>
+              </div>
+            </div>
+          ) : (
+            <Card.Text className="regular-price mb-0">
+              Giá: {formatVND(product.price)} VND
+            </Card.Text>
+          )}
+        </div>
       </Card.Body>
     </Card>
   );

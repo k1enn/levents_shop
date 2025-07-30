@@ -12,7 +12,8 @@ const CategoryBar = ({ activeCategory, onCategoryChange }) => {
   ];
 
   return (
-    <div className="category-bar-container bg-light py-3 mb-4">
+    <div className="py-3 mb-4">
+      <h1 className="fw-bold text-center">KHÁM PHÁ NGAY</h1>
       <div className="container">
         <Nav
           activeKey={activeCategory}
