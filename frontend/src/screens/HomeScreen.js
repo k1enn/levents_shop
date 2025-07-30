@@ -1,12 +1,20 @@
-import React, { useEffect, useState } from "react";
+/* Luna: HomeScreen 
+Vài components được sử dụng trong đây sử dụng static path
+*/
+import React, { useEffect, useState, navigate } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col, Container, Button } from "react-bootstrap";
 import Product from "../components/Product";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import Banner from "../components/Banner";
+import { Banner, StyledCarousel, FullWidthWrapper } from "../components/Banner";
+import NewCollectionBanner from "../components/NewCollectionBanner";
 import CategoryBar from "../components/CategoryBar";
+import CategoryGrid from "../components/CategoryGrid";
 import { listProducts } from "../actions/productActions";
+import { saleUtils } from "../utils/saleUtils"; // Import saleUtils
+import { Carousel } from "react-bootstrap";
+import OnlyOnline from "../components/OnlyOnline";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -19,17 +27,48 @@ const HomeScreen = () => {
     dispatch(listProducts());
   }, [dispatch]);
 
+  // Move to all products page
+  const handleViewAllProducts = () => {
+    navigate("/products");
+  };
+
+  const handleCategoryGridSelect = (category) => {
+    setActiveCategory(category);
+    // Smooth scroll to products section
+    const productsSection = document.getElementById("products-section");
+    if (productsSection) {
+      productsSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   // Filter products based on active category
   const getFilteredProducts = () => {
     if (activeCategory === "all") {
       return products;
     }
 
+    // Handle sale-off category
+    if (activeCategory === "sale-off") {
+      return products.filter((product) => {
+        return product.isActive && saleUtils.isProductOnSale(product);
+      });
+    }
+
+    // Handle regular categories
     return products.filter((product) => {
-      // Assuming your product object has a 'category' field
-      // Adjust this logic based on your actual product data structure
       return product.category?.toLowerCase() === activeCategory.toLowerCase();
     });
+  };
+
+  // Helper function to get category label for display
+  const getCategoryLabel = (category) => {
+    const categoryMap = {
+      male: "Nam",
+      female: "Nữ",
+      jacket: "Áo Khoác",
+      accessory: "Phụ Kiện",
+      "sale-off": "Giảm giá",
+    };
+    return categoryMap[category] || category;
   };
 
   const handleCategoryChange = (category) => {
@@ -39,48 +78,94 @@ const HomeScreen = () => {
   const filteredProducts = getFilteredProducts();
 
   return (
-    <div className="wrapper">
-      {/* Banner */}
-      <div
-        className="banner-container w-100 p-0 m-0"
-        style={{ maxWidth: "100vw" }}
-      >
-        <Banner />
-      </div>
+    <Container fluid className="px-0">
+      <Banner />
 
-      {/* Product container */}
-      <Container>
-        <h1 className="mb-4 pt-5 pb-2 text-center">Khám Phá Ngay</h1>
-        {/* Category Filter Bar */}
+      <Container className="mt-4">
+        {/*New Collection Section */}
+        <NewCollectionBanner />
+        {/* Category Grid Section */}
+        {loading ? (
+          <div className="text-center py-5">
+            <Loader />
+          </div>
+        ) : error ? (
+          <Message variant="danger">{error}</Message>
+        ) : (
+          <CategoryGrid
+            products={products || []}
+            onCategorySelect={handleCategoryGridSelect}
+          />
+        )}
+
         <CategoryBar
           activeCategory={activeCategory}
           onCategoryChange={handleCategoryChange}
         />
+
         {loading ? (
           <Loader />
         ) : error ? (
           <Message variant="danger">{error}</Message>
         ) : (
           <>
-            {filteredProducts.length === 0 ? (
-              <div className="text-center py-5">
-                <Message variant="info">
-                  Không tìm thấy sản phẩm nào trong danh mục này.
-                </Message>
-              </div>
-            ) : (
-              <Row xs={1} sm={2} md={3} lg={4} className="g-2">
-                {filteredProducts.map((product) => (
-                  <Col key={product._id} className="mb-1">
+            <Row className="mt-4">
+              {filteredProducts.length > 0 ? (
+                filteredProducts.map((product) => (
+                  <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                     <Product product={product} />
                   </Col>
-                ))}
-              </Row>
-            )}
+                ))
+              ) : (
+                <Col>
+                  <Message variant="info">
+                    {activeCategory === "sale-off"
+                      ? "Hiện tại không có sản phẩm nào đang được giảm giá"
+                      : `Không có sản phẩm nào trong danh mục ${getCategoryLabel(
+                          activeCategory
+                        )}`}
+                  </Message>
+                </Col>
+              )}
+            </Row>
           </>
         )}
+        <Button
+          variant="primary"
+          onClick={handleViewAllProducts}
+          className="ms-3"
+          style={{
+            borderRadius: "8px",
+            margin: "3rem auto",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            minWidth: "150px",
+            height: "40px",
+            transition: "all 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.textDecoration = "underline";
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.textDecoration = "none";
+          }}
+        >
+          Xem thêm
+        </Button>
       </Container>
-    </div>
+      <FullWidthWrapper>
+        <StyledCarousel pause="hover">
+          <Carousel.Item>
+            <img className="d-block" src="images/banner_16.png" />
+          </Carousel.Item>
+        </StyledCarousel>
+      </FullWidthWrapper>
+
+      {/* Last part just for looking good */}
+
+      <OnlyOnline></OnlyOnline>
+    </Container>
   );
 };
 

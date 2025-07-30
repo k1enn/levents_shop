@@ -64,4 +64,4 @@ const Banner = () => {
   );
 };
 
-export default Banner;
+export { Banner, StyledCarousel, FullWidthWrapper };
