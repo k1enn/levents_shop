@@ -32,6 +32,7 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   GET /api/users/profile
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
+  // This thing write the old way, harder to read btw
   // Check if req.user exists (should be set by protect middleware)
   if (!req.user) {
     res.status(401);
@@ -79,4 +80,32 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, getUserProfile, registerUser };
+// @desc    Update user profile
+// @route   PUT /api/users/profile
+// @access  Private
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  // Check if req.user exists
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+    const updatedUser = await user.save();
+    // Generate token
+    const token = generateToken(updatedUser._id);
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      token: token, // Send token in response
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+export { authUser, updateUserProfile, getUserProfile, registerUser };

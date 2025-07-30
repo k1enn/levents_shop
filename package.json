@@ -9,7 +9,7 @@
     "server": "nodemon backend/server",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "client": "npm start --prefix frontend",
-    "data:import": "node backend/seeder",
+    "data:import": "node backend/seeder -i",
     "data:destroy": "node backend/seeder -d"
   },
   "author": "Trung Kien",
