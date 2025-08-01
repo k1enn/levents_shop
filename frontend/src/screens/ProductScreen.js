@@ -9,11 +9,10 @@ import { listProductDetails } from "../actions/productActions";
 import { Form } from "react-bootstrap";
 
 const ProductScreen = ({ history, match }) => {
-  
   const [qty, setQty] = useState(1);
 
   const dispatch = useDispatch();
-
+  // Use selector here
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
 
