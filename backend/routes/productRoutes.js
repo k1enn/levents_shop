@@ -5,15 +5,18 @@ import {
   updateProduct,
   deleteProduct,
   getProducts,
+  getProductById, // Add this import
 } from "../controllers/productController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
+// Public routes
+router.get("/", getProducts);
 
-// Split the routes to make getProducts public
-router.get("/", getProducts); // Public route - anyone can view products
-router.post("/", protect, admin, createProduct); // Protected admin route
+// Protected admin routes
+router.post("/", protect, admin, createProduct);
 
 router
   .route("/:id")
+  .get(getProductById)
   .put(protect, admin, updateProduct)
   .delete(protect, admin, deleteProduct);
 

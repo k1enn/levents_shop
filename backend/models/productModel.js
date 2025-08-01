@@ -270,8 +270,6 @@ productSchema.pre("save", function (next) {
 productSchema.set("toJSON", {
   virtuals: true,
   transform: function (doc, ret, options) {
-    // Remove mongoose-specific fields
-    delete ret._id;
     delete ret.__v;
     return ret;
   },

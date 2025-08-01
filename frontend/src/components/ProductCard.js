@@ -1,66 +1,14 @@
-import React, { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { Card, Row, Col, Badge } from "react-bootstrap";
+import React from "react";
+import { Link } from "react-router-dom";
+import { Card, Row, Col } from "react-bootstrap";
 import Rating from "./Rating";
 import { saleUtils } from "../utils/saleUtils";
-import { listProductDetails } from "../actions/productActions";
 
-// NOTE: Aware of custom CSS when edit this
-const Product = () => {
-  // Removed props parameter
-  const { id } = useParams(); // Get product ID from URL
-  const dispatch = useDispatch();
-
-  // Get product details from Redux store
-  const productDetails = useSelector((state) => state.productDetails);
-  const { loading, error, product } = productDetails;
-
-  // Fetch product details when component mounts or ID changes
-  useEffect(() => {
-    if (id) {
-      dispatch(listProductDetails(id));
-    }
-  }, [dispatch, id]);
-
-  // Handle loading state
-  if (loading) {
-    return (
-      <Card className="my-1 mx-0 px-0 py-3 product-card">
-        <Card.Body className="text-center py-5">
-          <div>Đang tải...</div>
-        </Card.Body>
-      </Card>
-    );
-  }
-
-  // Handle error state
-  if (error) {
-    return (
-      <Card className="my-1 mx-0 px-0 py-3 product-card">
-        <Card.Body className="text-center py-5">
-          <div className="text-danger">Lỗi: {error}</div>
-        </Card.Body>
-      </Card>
-    );
-  }
-
-  // Handle no product found
-  if (!product || !product._id) {
-    return (
-      <Card className="my-1 mx-0 px-0 py-3 product-card">
-        <Card.Body className="text-center py-5">
-          <div>Không tìm thấy sản phẩm</div>
-        </Card.Body>
-      </Card>
-    );
-  }
-
+// This component is for displaying products in a list/grid
+const ProductCard = ({ product }) => {
   // Get sale information
   const saleInfo = saleUtils.getSaleInfo(product);
   const isOnSale = saleUtils.isProductOnSale(product);
-  const isSaleEndingSoon = saleUtils.isSaleEndingSoon(product);
-  const daysRemaining = saleUtils.getDaysRemaining(product);
 
   // Format price in VND
   const formatVND = (price) => {
@@ -127,4 +75,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default ProductCard;

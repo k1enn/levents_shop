@@ -10,7 +10,6 @@ const OnlyOnline = () => {
           <div className="card h-100">
             <img
               src="/images/image_18.png"
-              alt="Main Product"
               className="card-img-top h-100"
               style={{ objectFit: "cover", minHeight: "400px" }}
             />
@@ -25,7 +24,6 @@ const OnlyOnline = () => {
               <div className="card h-100">
                 <img
                   src="/images/image_17.png"
-                  alt="Product Image 1"
                   className="card-img-top h-100"
                   style={{ objectFit: "cover", minHeight: "180px" }}
                 />
@@ -35,7 +33,6 @@ const OnlyOnline = () => {
               <div className="card h-100">
                 <img
                   src="/images/image_19.png"
-                  alt="Product Image 2"
                   className="card-img-top h-100"
                   style={{ objectFit: "cover", minHeight: "180px" }}
                 />

@@ -61,15 +61,19 @@ const Header = () => {
             <Nav className="ms-auto d-flex align-items-center">
               {/* Search Bar */}
               <Form className="d-flex me-3">
-                <InputGroup>
+                <InputGroup className="align-items-stretch">
                   <Form.Control
                     type="search"
                     placeholder="Tìm kiếm..."
                     className="me-2"
                     aria-label="Search"
-                    style={{ minWidth: "200px" }}
+                    style={{ minWidth: "120px" }}
                   />
-                  <Button variant="outline-dark" type="submit">
+                  <Button
+                    variant="outline-dark"
+                    type="submit"
+                    className="d-flex align-items-center"
+                  >
                     <i className="fas fa-search"></i>
                   </Button>
                 </InputGroup>
@@ -114,24 +118,13 @@ const Header = () => {
 
       {/* Custom CSS */}
       <style jsx>{`
-        .custom-navbar {
-          background-color: white !important;
-          border-bottom: 1px solid #dee2e6;
-        }
         .custom-navbar .navbar-nav .nav-link {
           color: black !important;
-          font-weight: 500;
+          font-weight: 700;
           padding: 0.5rem 1rem;
         }
         .custom-navbar .navbar-nav .nav-link:hover {
           color: #495057 !important;
-        }
-        .custom-navbar .navbar-brand {
-          color: black !important;
-          font-size: 1.5rem;
-        }
-        .dropdown-toggle::after {
-          display: none;
         }
       `}</style>
     </header>

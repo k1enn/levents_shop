@@ -1,7 +1,7 @@
 /* Luna: HomeScreen 
 Vài components được sử dụng trong đây sử dụng static path
 */
-import React, { useEffect, useState, navigate } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Row, Col, Container, Button } from "react-bootstrap";
 import Product from "../components/Product";
@@ -15,6 +15,7 @@ import { listProducts } from "../actions/productActions";
 import { saleUtils } from "../utils/saleUtils"; // Import saleUtils
 import { Carousel } from "react-bootstrap";
 import OnlyOnline from "../components/OnlyOnline";
+import ProductCard from "../components/ProductCard";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -28,9 +29,7 @@ const HomeScreen = () => {
   }, [dispatch]);
 
   // Move to all products page
-  const handleViewAllProducts = () => {
-    navigate("/products");
-  };
+  const handleViewAllProducts = () => {};
 
   const handleCategoryGridSelect = (category) => {
     setActiveCategory(category);
@@ -113,7 +112,8 @@ const HomeScreen = () => {
               {filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => (
                   <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                    <Product product={product} />
+                    <ProductCard product={product} />{" "}
+                    {/* Use ProductCard instead of Product */}
                   </Col>
                 ))
               ) : (
