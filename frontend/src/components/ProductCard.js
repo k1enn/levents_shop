@@ -10,11 +10,6 @@ const ProductCard = ({ product }) => {
   const saleInfo = saleUtils.getSaleInfo(product);
   const isOnSale = saleUtils.isProductOnSale(product);
 
-  // Format price in VND
-  const formatVND = (price) => {
-    return new Intl.NumberFormat("vi-VN").format(price);
-  };
-
   return (
     <Card className="my-1 mx-0 px-0 py-3 product-card">
       <Link to={`/product/${product._id}`} className="text-decoration-none">
@@ -40,7 +35,12 @@ const ProductCard = ({ product }) => {
             </Link>
           </Col>
           <Col xs={5} className="text-end">
-            <Rating value={product.rating || 0} text="" size="small" />
+            <Rating
+              value={product.rating || 0}
+              text=""
+              size="small"
+              justifyEnd={true}
+            />
           </Col>
         </Row>
 
@@ -49,8 +49,8 @@ const ProductCard = ({ product }) => {
           {isOnSale ? (
             <div className="price-section">
               <div>
-                <span className="fw-bold">
-                  Giá: {formatVND(saleInfo.salePrice)} VND
+                <span className="h5 fw-bold">
+                  Giá: {saleInfo.salePrice} VND
                 </span>
                 <span
                   className="original-price text-muted"
@@ -60,13 +60,13 @@ const ProductCard = ({ product }) => {
                     padding: "0.6rem",
                   }}
                 >
-                  {formatVND(saleInfo.originalPrice)} VND
+                  {saleInfo.originalPrice} VND
                 </span>
               </div>
             </div>
           ) : (
-            <Card.Text className="regular-price mb-0">
-              Giá: {formatVND(product.price)} VND
+            <Card.Text className="h5 fw-bold">
+              Giá: {product.price} VND
             </Card.Text>
           )}
         </div>

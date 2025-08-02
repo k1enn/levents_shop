@@ -8,13 +8,13 @@ PRODUCT STRUCTURE
 - Rating: int
 - CIS: int
 - isActive: bool
-- Colors: array of objects
+- COLOR STRUCTURE
   - colorName: string
   - isAvailable: bool
-- Sizes: array of objects
+- SIZE STRUCTURE
   - sizeName: string
   - isAvailable: bool
-  - SALE STRUCTURE 
+- SALE STRUCTURE 
     - isOnSale: bool
     - saleType: string
     - saleValue: int

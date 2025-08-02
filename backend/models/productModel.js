@@ -1,3 +1,4 @@
+// NOTE: Most of functions in this file wrote by Claude 4.0 so beware when use it.
 import mongoose from "mongoose";
 import { saleUtils } from "../utils/saleUtils.js";
 
@@ -14,6 +15,44 @@ const reviewSchema = mongoose.Schema(
   },
   {
     timestamps: true,
+  }
+);
+
+const colorSchema = mongoose.Schema(
+  {
+    colorName: {
+      type: String,
+      required: true,
+      // Based on figma
+      enum: ["blue", "black", "pink"],
+    },
+    isAvailable: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
+  },
+  {
+    _id: false, // Don't create separate _id for color subdocument
+  }
+);
+
+const sizeSchema = mongoose.Schema(
+  {
+    sizeName: {
+      type: String,
+      required: true,
+      // Based on figma
+      enum: ["M", "L", "XL"],
+    },
+    isAvailable: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
+  },
+  {
+    _id: false, // Don't create separate _id for size subdocument
   }
 );
 
@@ -138,7 +177,29 @@ const productSchema = mongoose.Schema(
       required: true,
       default: true,
     },
-    // Add sale schema
+    // New color variants
+    colors: {
+      type: [colorSchema],
+      required: true,
+      validate: {
+        validator: function (colors) {
+          return colors && colors.length > 0;
+        },
+        message: "Product must have at least one color option",
+      },
+    },
+    // New size variants
+    sizes: {
+      type: [sizeSchema],
+      required: true,
+      validate: {
+        validator: function (sizes) {
+          return sizes && sizes.length > 0;
+        },
+        message: "Product must have at least one size option",
+      },
+    },
+    // Sale schema
     sale: {
       type: saleSchema,
       default: () => ({
@@ -173,6 +234,16 @@ productSchema.virtual("saleInfo").get(function () {
   return saleUtils.getSaleInfo(this);
 });
 
+// Virtual for available colors
+productSchema.virtual("availableColors").get(function () {
+  return this.colors.filter((color) => color.isAvailable);
+});
+
+// Virtual for available sizes
+productSchema.virtual("availableSizes").get(function () {
+  return this.sizes.filter((size) => size.isAvailable);
+});
+
 // Instance method to check if product is currently on sale
 productSchema.methods.isOnSale = function () {
   return saleUtils.isProductOnSale(this);
@@ -186,6 +257,49 @@ productSchema.methods.isSaleEndingSoon = function () {
 // Instance method to get days remaining for sale
 productSchema.methods.getDaysRemaining = function () {
   return saleUtils.getDaysRemaining(this);
+};
+
+// Instance method to check if specific color is available
+productSchema.methods.isColorAvailable = function (colorName) {
+  const color = this.colors.find((c) => c.colorName === colorName);
+  return color ? color.isAvailable : false;
+};
+
+// Instance method to check if specific size is available
+productSchema.methods.isSizeAvailable = function (sizeName) {
+  const size = this.sizes.find((s) => s.sizeName === sizeName);
+  return size ? size.isAvailable : false;
+};
+
+// Instance method to check if specific color/size combination is available
+productSchema.methods.isVariantAvailable = function (colorName, sizeName) {
+  return this.isColorAvailable(colorName) && this.isSizeAvailable(sizeName);
+};
+
+// Instance method to update color availability
+productSchema.methods.updateColorAvailability = function (
+  colorName,
+  isAvailable
+) {
+  const color = this.colors.find((c) => c.colorName === colorName);
+  if (color) {
+    color.isAvailable = isAvailable;
+    return this.save();
+  }
+  return Promise.reject(new Error(`Color ${colorName} not found`));
+};
+
+// Instance method to update size availability
+productSchema.methods.updateSizeAvailability = function (
+  sizeName,
+  isAvailable
+) {
+  const size = this.sizes.find((s) => s.sizeName === sizeName);
+  if (size) {
+    size.isAvailable = isAvailable;
+    return this.save();
+  }
+  return Promise.reject(new Error(`Size ${sizeName} not found`));
 };
 
 // Instance method to start a sale
@@ -229,6 +343,24 @@ productSchema.statics.findSalesEndingSoon = function () {
   });
 };
 
+// Static method to find products by color availability
+productSchema.statics.findByColor = function (colorName) {
+  return this.find({
+    isActive: true,
+    "colors.colorName": colorName,
+    "colors.isAvailable": true,
+  });
+};
+
+// Static method to find products by size availability
+productSchema.statics.findBySize = function (sizeName) {
+  return this.find({
+    isActive: true,
+    "sizes.sizeName": sizeName,
+    "sizes.isAvailable": true,
+  });
+};
+
 // Pre-save middleware to ensure sale data consistency
 productSchema.pre("save", function (next) {
   // If sale is being set to active, ensure required fields are present
@@ -263,6 +395,23 @@ productSchema.pre("save", function (next) {
     }
   }
 
+  // Validate that colors and sizes arrays contain unique values
+  if (this.colors && this.colors.length > 0) {
+    const colorNames = this.colors.map((c) => c.colorName);
+    const uniqueColorNames = [...new Set(colorNames)];
+    if (colorNames.length !== uniqueColorNames.length) {
+      return next(new Error("Duplicate color names are not allowed"));
+    }
+  }
+
+  if (this.sizes && this.sizes.length > 0) {
+    const sizeNames = this.sizes.map((s) => s.sizeName);
+    const uniqueSizeNames = [...new Set(sizeNames)];
+    if (sizeNames.length !== uniqueSizeNames.length) {
+      return next(new Error("Duplicate size names are not allowed"));
+    }
+  }
+
   next();
 });
 
@@ -278,4 +427,5 @@ productSchema.set("toJSON", {
 productSchema.set("toObject", { virtuals: true });
 
 const Product = mongoose.model("Product", productSchema);
+
 export default Product;
