@@ -130,3 +130,8 @@ h2 {
   transform: translateY(-1px);
   transition: all 0.2s ease;
 }
+
+/* Hide circle in radio button */
+.btn input[type="radio"] {
+  display: none !important;
+}
