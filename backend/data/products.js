@@ -8,6 +8,12 @@ PRODUCT STRUCTURE
 - Rating: int
 - CIS: int
 - isActive: bool
+- Colors: array of objects
+  - colorName: string
+  - isAvailable: bool
+- Sizes: array of objects
+  - sizeName: string
+  - isAvailable: bool
   - SALE STRUCTURE 
     - isOnSale: bool
     - saleType: string
@@ -26,6 +32,16 @@ const products = [
     rating: 5,
     countInStock: 50,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: true },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: true },
+    ],
     // ON SALE - 25% off
     sale: {
       isOnSale: true,
@@ -45,6 +61,16 @@ const products = [
     rating: 5,
     countInStock: 35,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: false },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: false },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
@@ -63,6 +89,16 @@ const products = [
     rating: 5,
     countInStock: 25,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: false },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: true },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: true },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
@@ -81,6 +117,16 @@ const products = [
     rating: 5,
     countInStock: 15,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: false },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: false },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: false },
+    ],
     // ON SALE - $50 off
     sale: {
       isOnSale: true,
@@ -100,6 +146,16 @@ const products = [
     rating: 5,
     countInStock: 40,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: true },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: true },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
@@ -118,6 +174,16 @@ const products = [
     rating: 5,
     countInStock: 20,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: false },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: false },
+      { sizeName: "XL", isAvailable: true },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
@@ -136,6 +202,16 @@ const products = [
     rating: 5,
     countInStock: 30,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: false },
+      { colorName: "pink", isAvailable: true },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: true },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
@@ -154,6 +230,16 @@ const products = [
     rating: 4,
     countInStock: 45,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: true },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: false },
+    ],
     // ON SALE - 30% off
     sale: {
       isOnSale: true,
@@ -173,6 +259,16 @@ const products = [
     rating: 4,
     countInStock: 60,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: false },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: false },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: true },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
@@ -191,6 +287,16 @@ const products = [
     rating: 5,
     countInStock: 22,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: false },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: false },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: true },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
@@ -209,6 +315,16 @@ const products = [
     rating: 4,
     countInStock: 35,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: false },
+      { colorName: "pink", isAvailable: true },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: true },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
@@ -227,7 +343,16 @@ const products = [
     rating: 5,
     countInStock: 28,
     isActive: true,
-
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: false },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: true },
+    ],
     // ON SALE - 20% off
     sale: {
       isOnSale: true,
@@ -247,6 +372,16 @@ const products = [
     rating: 4,
     countInStock: 32,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: false },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: true },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: false },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
@@ -265,6 +400,16 @@ const products = [
     rating: 4,
     countInStock: 55,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: true },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: true },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
@@ -283,6 +428,16 @@ const products = [
     rating: 5,
     countInStock: 40,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: false },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: false },
+      { sizeName: "XL", isAvailable: true },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
@@ -301,6 +456,16 @@ const products = [
     rating: 4,
     countInStock: 25,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: false },
+      { colorName: "pink", isAvailable: true },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: true },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
@@ -319,6 +484,16 @@ const products = [
     rating: 5,
     countInStock: 18,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: false },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: false },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: true },
+    ],
     sale: {
       isOnSale: true,
       saleType: "fixed",
@@ -337,6 +512,16 @@ const products = [
     rating: 4,
     countInStock: 30,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: false },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: false },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: true },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
@@ -355,6 +540,16 @@ const products = [
     rating: 4,
     countInStock: 35,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: false },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: false },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
@@ -373,6 +568,16 @@ const products = [
     rating: 5,
     countInStock: 22,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: false },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: false },
+      { sizeName: "XL", isAvailable: true },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
@@ -391,6 +596,16 @@ const products = [
     rating: 4,
     countInStock: 28,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: false },
+      { colorName: "pink", isAvailable: true },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: true },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
@@ -409,6 +624,16 @@ const products = [
     rating: 4,
     countInStock: 42,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: true },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: false },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
@@ -427,6 +652,16 @@ const products = [
     rating: 5,
     countInStock: 38,
     isActive: true,
+    colors: [
+      { colorName: "blue", isAvailable: true },
+      { colorName: "black", isAvailable: true },
+      { colorName: "pink", isAvailable: false },
+    ],
+    sizes: [
+      { sizeName: "M", isAvailable: true },
+      { sizeName: "L", isAvailable: true },
+      { sizeName: "XL", isAvailable: true },
+    ],
     sale: {
       isOnSale: false,
       saleType: "fixed",
