@@ -47,19 +47,29 @@ const createProduct = asyncHandler(async (req, res) => {
 const updateProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  // Validate ObjectId format
   if (!mongoose.Types.ObjectId.isValid(id)) {
     res.status(400);
     throw new Error("Invalid product ID format");
   }
 
-  const { name, price, description, image, brand, category, countInStock } =
-    req.body;
+  const {
+    name,
+    price,
+    description,
+    image,
+    brand,
+    category,
+    countInStock,
+    isActive,
+    colors,
+    sizes,
+    sale,
+  } = req.body;
 
   const product = await Product.findById(id);
 
   if (product) {
-    // Validate input data before updating
+    // Existing validations...
     if (price !== undefined && (isNaN(price) || price <= 0)) {
       res.status(400);
       throw new Error("Price must be a positive number");
@@ -73,16 +83,39 @@ const updateProduct = asyncHandler(async (req, res) => {
       throw new Error("Count in stock must be a non-negative number");
     }
 
+    // Update existing fields
     product.name = name?.trim() || product.name;
     product.price = price ? parseFloat(price) : product.price;
     product.description = description || product.description;
     product.image = image || product.image;
-    product.brand = brand?.trim() || product.brand;
     product.category = category?.trim() || product.category;
     product.countInStock =
       countInStock !== undefined
         ? parseInt(countInStock)
         : product.countInStock;
+
+    // Update new fields
+    if (isActive !== undefined) {
+      product.isActive = isActive;
+    }
+
+    if (colors && Array.isArray(colors) && colors.length > 0) {
+      product.colors = colors;
+    }
+
+    if (sizes && Array.isArray(sizes) && sizes.length > 0) {
+      product.sizes = sizes;
+    }
+
+    if (sale) {
+      product.sale = {
+        isOnSale: sale.isOnSale || false,
+        saleType: sale.saleType || "percentage",
+        saleValue: sale.isOnSale ? sale.saleValue : 0,
+        saleStartDate: sale.isOnSale ? sale.saleStartDate : null,
+        saleEndDate: sale.isOnSale ? sale.saleEndDate : null,
+      };
+    }
 
     const updatedProduct = await product.save();
     res.json(updatedProduct);

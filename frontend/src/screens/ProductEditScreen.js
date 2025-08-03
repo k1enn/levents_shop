@@ -19,6 +19,14 @@ const ProductEditScreen = ({ match, history }) => {
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [isActive, setIsActive] = useState(true);
+  const [colors, setColors] = useState([]);
+  const [sizes, setSizes] = useState([]);
+  const [isOnSale, setIsOnSale] = useState(false);
+  const [saleType, setSaleType] = useState("percentage");
+  const [saleValue, setSaleValue] = useState(0);
+  const [saleStartDate, setSaleStartDate] = useState("");
+  const [saleEndDate, setSaleEndDate] = useState("");
 
   const dispatch = useDispatch();
 
@@ -46,6 +54,29 @@ const ProductEditScreen = ({ match, history }) => {
         setCategory(product.category);
         setCountInStock(product.countInStock);
         setDescription(product.description);
+
+        // Add new fields
+        setIsActive(product.isActive);
+        setColors(product.colors || []);
+        setSizes(product.sizes || []);
+
+        // Sale information
+        if (product.sale) {
+          setIsOnSale(product.sale.isOnSale);
+          setSaleType(product.sale.saleType);
+          setSaleValue(product.sale.saleValue);
+          setSaleStartDate(
+            product.sale.saleStartDate
+              ? new Date(product.sale.saleStartDate).toISOString().split("T")[0]
+              : ""
+          );
+
+          setSaleEndDate(
+            product.sale.saleEndDate
+              ? new Date(product.sale.saleEndDate).toISOString().split("T")[0]
+              : ""
+          );
+        }
       }
     }
   }, [dispatch, history, productId, product, successUpdate]);
@@ -84,8 +115,50 @@ const ProductEditScreen = ({ match, history }) => {
         category,
         description,
         countInStock,
+        isActive,
+        colors,
+        sizes,
+        sale: {
+          isOnSale,
+          saleType,
+          saleValue: isOnSale ? saleValue : 0,
+          saleStartDate: isOnSale ? saleStartDate : null,
+          saleEndDate: isOnSale ? saleEndDate : null,
+        },
       })
     );
+  };
+
+  // Color management functions
+  const addColor = () => {
+    setColors([...colors, { colorName: "blue", isAvailable: true }]);
+  };
+
+  const updateColor = (index, field, value) => {
+    const updatedColors = colors.map((color, i) =>
+      i === index ? { ...color, [field]: value } : color
+    );
+    setColors(updatedColors);
+  };
+
+  const removeColor = (index) => {
+    setColors(colors.filter((_, i) => i !== index));
+  };
+
+  // Size management functions
+  const addSize = () => {
+    setSizes([...sizes, { sizeName: "M", isAvailable: true }]);
+  };
+
+  const updateSize = (index, field, value) => {
+    const updatedSizes = sizes.map((size, i) =>
+      i === index ? { ...size, [field]: value } : size
+    );
+    setSizes(updatedSizes);
+  };
+
+  const removeSize = (index) => {
+    setSizes(sizes.filter((_, i) => i !== index));
   };
 
   return (
@@ -169,6 +242,153 @@ const ProductEditScreen = ({ match, history }) => {
                 onChange={(e) => setDescription(e.target.value)}
               ></Form.Control>
             </Form.Group>
+            {/* Product Status */}
+            <Form.Group controlId="isActive">
+              <Form.Check
+                type="checkbox"
+                label="Product is Active"
+                checked={isActive}
+                onChange={(e) => setIsActive(e.target.checked)}
+              />
+            </Form.Group>
+
+            {/* Colors Section */}
+            <Form.Group>
+              <Form.Label>Colors</Form.Label>
+              {colors.map((color, index) => (
+                <div key={index} className="d-flex align-items-center mb-2">
+                  <Form.Control
+                    as="select"
+                    value={color.colorName}
+                    onChange={(e) =>
+                      updateColor(index, "colorName", e.target.value)
+                    }
+                    className="mr-2"
+                  >
+                    <option value="blue">Blue</option>
+                    <option value="black">Black</option>
+                    <option value="pink">Pink</option>
+                  </Form.Control>
+                  <Form.Check
+                    type="checkbox"
+                    label="Available"
+                    checked={color.isAvailable}
+                    onChange={(e) =>
+                      updateColor(index, "isAvailable", e.target.checked)
+                    }
+                    className="mr-2"
+                  />
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => removeColor(index)}
+                  >
+                    Remove
+                  </Button>
+                </div>
+              ))}
+              <Button variant="secondary" onClick={addColor}>
+                Add Color
+              </Button>
+            </Form.Group>
+
+            {/* Sizes Section */}
+            <Form.Group>
+              <Form.Label>Sizes</Form.Label>
+              {sizes.map((size, index) => (
+                <div key={index} className="d-flex align-items-center mb-2">
+                  <Form.Control
+                    as="select"
+                    value={size.sizeName}
+                    onChange={(e) =>
+                      updateSize(index, "sizeName", e.target.value)
+                    }
+                    className="mr-2"
+                  >
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                  </Form.Control>
+                  <Form.Check
+                    type="checkbox"
+                    label="Available"
+                    checked={size.isAvailable}
+                    onChange={(e) =>
+                      updateSize(index, "isAvailable", e.target.checked)
+                    }
+                    className="mr-2"
+                  />
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => removeSize(index)}
+                  >
+                    Remove
+                  </Button>
+                </div>
+              ))}
+              <Button variant="secondary" onClick={addSize}>
+                Add Size
+              </Button>
+            </Form.Group>
+
+            {/* Sale Information */}
+            <Form.Group controlId="isOnSale">
+              <Form.Check
+                type="checkbox"
+                label="Product is on Sale"
+                checked={isOnSale}
+                onChange={(e) => setIsOnSale(e.target.checked)}
+              />
+            </Form.Group>
+
+            {isOnSale && (
+              <>
+                <Form.Group controlId="saleType">
+                  <Form.Label>Sale Type</Form.Label>
+                  <Form.Control
+                    as="select"
+                    value={saleType}
+                    onChange={(e) => setSaleType(e.target.value)}
+                  >
+                    <option value="percentage">Percentage</option>
+                    <option value="fixed">Fixed Amount</option>
+                  </Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId="saleValue">
+                  <Form.Label>
+                    Sale Value {saleType === "percentage" ? "(%)" : "($)"}
+                  </Form.Label>
+                  <Form.Control
+                    type="number"
+                    placeholder={`Enter ${
+                      saleType === "percentage" ? "percentage" : "amount"
+                    }`}
+                    value={saleValue}
+                    onChange={(e) => setSaleValue(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="saleStartDate">
+                  <Form.Label>Sale Start Date</Form.Label>
+                  <Form.Control
+                    type="date"
+                    value={saleStartDate}
+                    onChange={(e) => setSaleStartDate(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="saleEndDate">
+                  <Form.Label>Sale End Date</Form.Label>
+                  <Form.Control
+                    type="date"
+                    value={saleEndDate}
+                    onChange={(e) => setSaleEndDate(e.target.value)}
+                  />
+                </Form.Group>
+              </>
+            )}
 
             <Button type="submit" variant="primary">
               Update
