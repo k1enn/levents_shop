@@ -85,7 +85,7 @@ const ProductScreen = ({ history, match }) => {
                     src={product.image}
                     alt={product.name}
                     className="w-100"
-                    style={{ maxHeight: "700px", objectFit: "cover" }}
+                    style={{ objectFit: "scale" }}
                   />
                 </Col>
               </Row>
@@ -278,8 +278,10 @@ const ProductScreen = ({ history, match }) => {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      minWidth: "200px",
-                      height: "40px",
+                      maxWidth: "200px",
+                      width: "100%",
+                      height: "100%",
+                      maxHeight: "40px",
                       transition: "all 0.2s ease",
                     }}
                     onMouseEnter={(e) => {
@@ -306,8 +308,10 @@ const ProductScreen = ({ history, match }) => {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      minWidth: "200px",
-                      height: "40px",
+                      maxWidth: "200px",
+                      width: "100%",
+                      height: "100%",
+                      maxHeight: "40px",
                       transition: "all 0.2s ease",
                       backgroundColor: "transparent",
                       color: "#000000",
@@ -341,37 +345,40 @@ const ProductScreen = ({ history, match }) => {
             <Row>
               <Col>
                 <h2 className="fw-bold mb-4 text-center">CÁC SẢN PHẨM KHÁC</h2>
-                <div className="overflow-x-auto">
-                  <Row className="flex-nowrap gap-3 pb-3">
-                    {products
-                      .filter(
-                        (p) =>
-                          p.category === product.category &&
-                          p._id !== product._id &&
-                          p.isActive // Only show active products
-                      )
-                      .slice(0, 4) // Limit to 4 products for performance
-                      .map((p) => (
-                        <Col
-                          key={p._id}
-                          className="flex-shrink-0"
-                          style={{ minWidth: "250px" }}
-                        >
-                          <ProductCard product={p} />
-                        </Col>
-                      ))}
-                  </Row>
-                  {products.filter(
-                    (p) =>
-                      p.category === product.category &&
-                      p._id !== product._id &&
-                      p.isActive
-                  ).length === 0 && (
-                    <p className="text-muted">
-                      Không có sản phẩm cùng danh mục khác.
-                    </p>
-                  )}
+                <div
+                  className="d-flex gap-3 pb-3"
+                  style={{
+                    overflowX: "auto",
+                    scrollBehavior: "smooth",
+                    WebkitOverflowScrolling: "touch", // For smooth scrolling on iOS
+                  }}
+                >
+                  {products
+                    .filter(
+                      (p) =>
+                        p.category === product.category &&
+                        p._id !== product._id &&
+                        p.isActive // Only show active products
+                    )
+                    .map((p) => (
+                      <div
+                        key={p._id}
+                        style={{ minWidth: "200px", margin: "1rem" }}
+                      >
+                        <ProductCard product={p} />
+                      </div>
+                    ))}
                 </div>
+                {products.filter(
+                  (p) =>
+                    p.category === product.category &&
+                    p._id !== product._id &&
+                    p.isActive
+                ).length === 0 && (
+                  <p className="text-muted">
+                    Không có sản phẩm cùng danh mục khác.
+                  </p>
+                )}
               </Col>
             </Row>
           )}
