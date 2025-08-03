@@ -1,18 +1,27 @@
-import express from "express";
-const router = express.Router();
-import { protect } from "../middleware/authMiddleware.js";
+import express from 'express'
+const router = express.Router()
 import {
   authUser,
-  getUserProfile,
   registerUser,
+  getUserProfile,
   updateUserProfile,
-} from "../controllers/userController.js";
+  getUsers,
+  deleteUser,
+  getUserById,
+  updateUser,
+} from '../controllers/userController.js'
+import { protect, admin } from '../middleware/authMiddleware.js'
 
-router.route("/").post(registerUser);
-router.post("/login", authUser);
+router.route('/').post(registerUser).get(protect, admin, getUsers)
+router.post('/login', authUser)
 router
-  .route("/profile") // All things here use protected middleware
-  .get(protect, getUserProfile) // For login user
-  .put(protect, updateUserProfile); // For change user information
+  .route('/profile')
+  .get(protect, getUserProfile)
+  .put(protect, updateUserProfile)
+router
+  .route('/:id')
+  .delete(protect, admin, deleteUser)
+  .get(protect, admin, getUserById)
+  .put(protect, admin, updateUser)
 
-export default router;
+export default router
