@@ -41,6 +41,11 @@ const HomeScreen = () => {
   };
   // Filter products based on active category
   const getFilteredProducts = () => {
+    // Guard clause - return empty array if products is undefined
+    if (!products || !Array.isArray(products)) {
+      return [];
+    }
+
     if (activeCategory === "all") {
       return products;
     }

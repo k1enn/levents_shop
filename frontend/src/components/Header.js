@@ -10,7 +10,7 @@ import {
   InputGroup,
   Button,
 } from "react-bootstrap";
-import { logout } from "../actions/userAction";
+import { logout } from "../actions/userActions";
 
 const Header = () => {
   const dispatch = useDispatch();
