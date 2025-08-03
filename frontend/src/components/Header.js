@@ -61,19 +61,15 @@ const Header = () => {
             <Nav className="ms-auto d-flex align-items-center">
               {/* Search Bar */}
               <Form className="d-flex me-3">
-                <InputGroup className="align-items-stretch">
+                <InputGroup>
                   <Form.Control
                     type="search"
                     placeholder="Tìm kiếm..."
                     className="me-2"
                     aria-label="Search"
-                    style={{ minWidth: "120px" }}
+                    style={{ minWidth: "200px" }}
                   />
-                  <Button
-                    variant="outline-dark"
-                    type="submit"
-                    className="d-flex align-items-center"
-                  >
+                  <Button variant="outline-dark" type="submit">
                     <i className="fas fa-search"></i>
                   </Button>
                 </InputGroup>
@@ -93,6 +89,22 @@ const Header = () => {
                   <LinkContainer to="/profile">
                     <NavDropdown.Item>Profile</NavDropdown.Item>
                   </LinkContainer>
+                  {userInfo.isAdmin && (
+                    <>
+                      <NavDropdown.Divider />
+
+                      <LinkContainer to="/admin/userlist">
+                        <NavDropdown.Item>Manage Users</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/productlist">
+                        <NavDropdown.Item>Manage Products</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/orderlist">
+                        <NavDropdown.Item>Manage Orders</NavDropdown.Item>
+                      </LinkContainer>
+                      <NavDropdown.Divider />
+                    </>
+                  )}
                   <NavDropdown.Item onClick={logoutHandler}>
                     Log Out
                   </NavDropdown.Item>
@@ -118,13 +130,24 @@ const Header = () => {
 
       {/* Custom CSS */}
       <style jsx>{`
+        .custom-navbar {
+          background-color: white !important;
+          border-bottom: 1px solid #dee2e6;
+        }
         .custom-navbar .navbar-nav .nav-link {
           color: black !important;
-          font-weight: 700;
+          font-weight: 500;
           padding: 0.5rem 1rem;
         }
         .custom-navbar .navbar-nav .nav-link:hover {
           color: #495057 !important;
+        }
+        .custom-navbar .navbar-brand {
+          color: black !important;
+          font-size: 1.5rem;
+        }
+        .dropdown-toggle::after {
+          display: none;
         }
       `}</style>
     </header>
