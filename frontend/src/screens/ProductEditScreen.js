@@ -57,8 +57,16 @@ const ProductEditScreen = ({ match, history }) => {
 
         // Add new fields
         setIsActive(product.isActive);
-        setColors(product.colors || []);
-        setSizes(product.sizes || []);
+        setColors(
+          product.colors && product.colors.length > 0
+            ? product.colors
+            : [{ colorName: "blue", isAvailable: true }]
+        );
+        setSizes(
+          product.sizes && product.sizes.length > 0
+            ? product.sizes
+            : [{ sizeName: "M", isAvailable: true }]
+        );
 
         // Sale information
         if (product.sale) {
@@ -106,6 +114,81 @@ const ProductEditScreen = ({ match, history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    // Validation
+    if (!name.trim()) {
+      alert("Product name is required");
+      return;
+    }
+
+    if (!category) {
+      alert("Please select a category");
+      return;
+    }
+
+    if (!description.trim()) {
+      alert("Product description is required");
+      return;
+    }
+
+    if (price <= 0) {
+      alert("Price must be greater than 0");
+      return;
+    }
+
+    if (countInStock < 0) {
+      alert("Count in stock cannot be negative");
+      return;
+    }
+
+    if (!image.trim()) {
+      alert("Product image is required");
+      return;
+    }
+
+    if (colors.length === 0) {
+      alert("Product must have at least one color option");
+      return;
+    }
+
+    if (sizes.length === 0) {
+      alert("Product must have at least one size option");
+      return;
+    }
+
+    // Sale validation
+    if (isOnSale) {
+      if (!saleValue || saleValue <= 0) {
+        alert("Sale value must be greater than 0 when product is on sale");
+        return;
+      }
+
+      if (saleType === "percentage" && saleValue > 100) {
+        alert("Percentage discount cannot exceed 100%");
+        return;
+      }
+
+      if (saleType === "fixed" && saleValue >= price) {
+        alert("Fixed discount cannot exceed or equal product price");
+        return;
+      }
+
+      if (!saleStartDate) {
+        alert("Sale start date is required when product is on sale");
+        return;
+      }
+
+      if (!saleEndDate) {
+        alert("Sale end date is required when product is on sale");
+        return;
+      }
+
+      if (new Date(saleEndDate) <= new Date(saleStartDate)) {
+        alert("Sale end date must be after sale start date");
+        return;
+      }
+    }
+
     dispatch(
       updateProduct({
         _id: productId,
@@ -142,6 +225,10 @@ const ProductEditScreen = ({ match, history }) => {
   };
 
   const removeColor = (index) => {
+    if (colors.length <= 1) {
+      alert("Product must have at least one color option");
+      return;
+    }
     setColors(colors.filter((_, i) => i !== index));
   };
 
@@ -158,6 +245,10 @@ const ProductEditScreen = ({ match, history }) => {
   };
 
   const removeSize = (index) => {
+    if (sizes.length <= 1) {
+      alert("Product must have at least one size option");
+      return;
+    }
     setSizes(sizes.filter((_, i) => i !== index));
   };
 
@@ -177,32 +268,37 @@ const ProductEditScreen = ({ match, history }) => {
         ) : (
           <Form onSubmit={submitHandler}>
             <Form.Group controlId="name">
-              <Form.Label>Name</Form.Label>
+              <Form.Label>Name *</Form.Label>
               <Form.Control
                 type="name"
                 placeholder="Enter name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required
               ></Form.Control>
             </Form.Group>
 
             <Form.Group controlId="price">
-              <Form.Label>Price</Form.Label>
+              <Form.Label>Price *</Form.Label>
               <Form.Control
                 type="number"
                 placeholder="Enter price"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
+                min="0.01"
+                step="0.01"
+                required
               ></Form.Control>
             </Form.Group>
 
             <Form.Group controlId="image">
-              <Form.Label>Image</Form.Label>
+              <Form.Label>Image *</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter image url"
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
+                required
               ></Form.Control>
               <Form.File
                 id="image-file"
@@ -214,32 +310,42 @@ const ProductEditScreen = ({ match, history }) => {
             </Form.Group>
 
             <Form.Group controlId="countInStock">
-              <Form.Label>Count In Stock</Form.Label>
+              <Form.Label>Count In Stock *</Form.Label>
               <Form.Control
                 type="number"
                 placeholder="Enter countInStock"
                 value={countInStock}
                 onChange={(e) => setCountInStock(e.target.value)}
+                min="0"
+                required
               ></Form.Control>
             </Form.Group>
 
             <Form.Group controlId="category">
-              <Form.Label>Category</Form.Label>
+              <Form.Label>Category *</Form.Label>
               <Form.Control
-                type="text"
-                placeholder="Enter category"
+                as="select"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-              ></Form.Control>
+                required
+              >
+                <option value="">Select Category</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+                <option value="jacket">Jacket</option>
+                <option value="accessory">Accessory</option>
+              </Form.Control>
             </Form.Group>
 
             <Form.Group controlId="description">
-              <Form.Label>Description</Form.Label>
+              <Form.Label>Description *</Form.Label>
               <Form.Control
-                type="text"
+                as="textarea"
+                rows={3}
                 placeholder="Enter description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                required
               ></Form.Control>
             </Form.Group>
             {/* Product Status */}

@@ -8,6 +8,7 @@ import Rating from "../components/Rating";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { listProductDetails, listProducts } from "../actions/productActions";
+import { buyNow } from "../actions/cartActions";
 import { Form } from "react-bootstrap";
 
 const ProductScreen = ({ history, match }) => {
@@ -21,6 +22,8 @@ const ProductScreen = ({ history, match }) => {
   const { loading, error, product } = productDetails;
   const productList = useSelector((state) => state.productList);
   const { products = [] } = productList; // Default to empty array
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   // Hard coded this because only have 3 colors
   const colorMapping = {
@@ -58,6 +61,21 @@ const ProductScreen = ({ history, match }) => {
       ...(selectedSize && { size: selectedSize }),
     });
     history.push(`/cart/${match.params.id}?${params.toString()}`);
+  };
+
+  const buyNowHandler = async () => {
+    try {
+      // Use buyNow action to clear cart and add this item
+      await dispatch(buyNow(match.params.id, qty, selectedColor, selectedSize));
+      // Redirect to checkout flow - skip login if already authenticated
+      if (userInfo) {
+        history.push("/shipping");
+      } else {
+        history.push("/login?redirect=shipping");
+      }
+    } catch (error) {
+      console.error("Error during buy now:", error);
+    }
   };
 
   // Helper function to check if a variant combination is valid
@@ -266,6 +284,7 @@ const ProductScreen = ({ history, match }) => {
                 <div className="d-flex gap-2 mb-4">
                   <Button
                     variant="primary"
+                    onClick={buyNowHandler}
                     disabled={
                       product.countInStock === 0 ||
                       !selectedColor ||

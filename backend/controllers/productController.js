@@ -6,13 +6,25 @@ import mongoose from "mongoose";
 // @route   POST /api/products
 // @access  Private/Admin
 const createProduct = asyncHandler(async (req, res) => {
-  const { name, price, description, image, brand, category, countInStock } =
-    req.body;
+  const {
+    name,
+    price,
+    description,
+    image,
+    category,
+    countInStock,
+    isActive,
+    colors,
+    sizes,
+    sale,
+  } = req.body;
 
   // Validate required fields
-  if (!name || !price || !brand || !category) {
+  if (!name || !price || !category || !description || !image) {
     res.status(400);
-    throw new Error("Name, price, brand, and category are required");
+    throw new Error(
+      "Name, price, category, description, and image are required"
+    );
   }
 
   // Validate data types
@@ -26,15 +38,99 @@ const createProduct = asyncHandler(async (req, res) => {
     throw new Error("Count in stock must be a non-negative number");
   }
 
+  // Validate category enum
+  const validCategories = ["female", "male", "jacket", "accessory"];
+  if (!validCategories.includes(category)) {
+    res.status(400);
+    throw new Error("Category must be one of: female, male, jacket, accessory");
+  }
+
+  // Validate colors array
+  if (!colors || !Array.isArray(colors) || colors.length === 0) {
+    res.status(400);
+    throw new Error("Product must have at least one color option");
+  }
+
+  // Validate each color
+  const validColors = ["blue", "black", "pink"];
+  for (const color of colors) {
+    if (!color.colorName || !validColors.includes(color.colorName)) {
+      res.status(400);
+      throw new Error("Color must be one of: blue, black, pink");
+    }
+    if (typeof color.isAvailable !== "boolean") {
+      res.status(400);
+      throw new Error("Color availability must be a boolean");
+    }
+  }
+
+  // Validate sizes array
+  if (!sizes || !Array.isArray(sizes) || sizes.length === 0) {
+    res.status(400);
+    throw new Error("Product must have at least one size option");
+  }
+
+  // Validate each size
+  const validSizes = ["M", "L", "XL"];
+  for (const size of sizes) {
+    if (!size.sizeName || !validSizes.includes(size.sizeName)) {
+      res.status(400);
+      throw new Error("Size must be one of: M, L, XL");
+    }
+    if (typeof size.isAvailable !== "boolean") {
+      res.status(400);
+      throw new Error("Size availability must be a boolean");
+    }
+  }
+
+  // Validate sale information if provided
+  if (sale && sale.isOnSale) {
+    if (!sale.saleValue || sale.saleValue <= 0) {
+      res.status(400);
+      throw new Error(
+        "Sale value must be greater than 0 when product is on sale"
+      );
+    }
+
+    if (sale.saleType === "percentage" && sale.saleValue > 100) {
+      res.status(400);
+      throw new Error("Percentage discount cannot exceed 100%");
+    }
+
+    if (sale.saleType === "fixed" && sale.saleValue >= price) {
+      res.status(400);
+      throw new Error("Fixed discount cannot exceed or equal product price");
+    }
+
+    if (!sale.saleStartDate || !sale.saleEndDate) {
+      res.status(400);
+      throw new Error(
+        "Sale start date and end date are required when product is on sale"
+      );
+    }
+
+    if (new Date(sale.saleEndDate) <= new Date(sale.saleStartDate)) {
+      res.status(400);
+      throw new Error("Sale end date must be after sale start date");
+    }
+  }
+
   const product = new Product({
     name: name.trim(),
     price: parseFloat(price),
     user: req.user._id,
-    image: image || "",
-    brand: brand.trim(),
+    image: image.trim(),
     category: category.trim(),
     countInStock: parseInt(countInStock) || 0,
-    description: description || "",
+    description: description.trim(),
+    isActive: isActive !== undefined ? isActive : true,
+    colors: colors,
+    sizes: sizes,
+    sale: sale || {
+      isOnSale: false,
+      saleType: "percentage",
+      saleValue: 0,
+    },
   });
 
   const createdProduct = await product.save();
@@ -57,7 +153,6 @@ const updateProduct = asyncHandler(async (req, res) => {
     price,
     description,
     image,
-    brand,
     category,
     countInStock,
     isActive,
