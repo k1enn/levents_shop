@@ -18,6 +18,7 @@ import UserEditScreen from "./screens/UserEditScreen";
 import ProductListScreen from "./screens/ProductListScreen";
 import ProductEditScreen from "./screens/ProductEditScreen";
 import ProductCreateScreen from "./screens/ProductCreateScreen";
+import ProductsScreen from "./screens/ProductsScreen";
 import OrderListScreen from "./screens/OrderListScreen";
 
 const AppContent = () => {
@@ -40,6 +41,13 @@ const AppContent = () => {
           <Route path="/payment" component={PaymentScreen} />
           <Route path="/placeorder" component={PlaceOrderScreen} />
           <Route path="/order/:id" component={OrderScreen} />
+          <Route path="/products" component={ProductsScreen} />
+          <Route path="/search/:keyword" component={ProductsScreen} />
+          <Route
+            path="/search/:keyword/page/:pageNumber"
+            component={ProductsScreen}
+          />
+          <Route path="/page/:pageNumber" component={ProductsScreen} />
           <Route path="/" component={HomeScreen} exact />
 
           {/* Admin Routes */}

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
+import { useHistory } from "react-router-dom";
 import {
   Navbar,
   Nav,
@@ -13,12 +14,22 @@ import {
 import { logout } from "../actions/userActions";
 
 const Header = () => {
+  const [keyword, setKeyword] = useState("");
   const dispatch = useDispatch();
+  const history = useHistory();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
   const logoutHandler = () => {
     dispatch(logout());
+  };
+
+  const searchSubmitHandler = (e) => {
+    e.preventDefault();
+    if (keyword.trim()) {
+      history.push(`/search/${keyword.trim()}`);
+      setKeyword(""); // Clear search after submission
+    }
   };
 
   return (
@@ -40,19 +51,19 @@ const Header = () => {
           <Navbar.Collapse id="basic-navbar-nav">
             {/* Left side navigation items */}
             <Nav className="me-auto">
-              <LinkContainer to="/">
-                <Nav.Link className="text-dark">Sản phẩm mới</Nav.Link>
+              <LinkContainer to="/products">
+                <Nav.Link className="text-dark">Sản phẩm</Nav.Link>
               </LinkContainer>
-              <LinkContainer to="/male">
+              <LinkContainer to="/products?category=male">
                 <Nav.Link className="text-dark">Nam</Nav.Link>
               </LinkContainer>
-              <LinkContainer to="/female">
+              <LinkContainer to="/products?category=female">
                 <Nav.Link className="text-dark">Nữ</Nav.Link>
               </LinkContainer>
-              <LinkContainer to="/jacket">
+              <LinkContainer to="/products?category=jacket">
                 <Nav.Link className="text-dark">Áo khoác</Nav.Link>
               </LinkContainer>
-              <LinkContainer to="/accessory">
+              <LinkContainer to="/products?category=accessory">
                 <Nav.Link className="text-dark">Phụ kiện</Nav.Link>
               </LinkContainer>
             </Nav>
@@ -60,7 +71,7 @@ const Header = () => {
             {/* Right side - Search, Account, Cart */}
             <Nav className="ms-auto d-flex align-items-center">
               {/* Search Bar */}
-              <Form className="d-flex me-3">
+              <Form className="d-flex me-3" onSubmit={searchSubmitHandler}>
                 <InputGroup>
                   <Form.Control
                     type="search"
@@ -68,6 +79,8 @@ const Header = () => {
                     className="me-2"
                     aria-label="Search"
                     style={{ minWidth: "200px" }}
+                    value={keyword}
+                    onChange={(e) => setKeyword(e.target.value)}
                   />
                   <Button variant="outline-dark" type="submit">
                     <i className="fas fa-search"></i>

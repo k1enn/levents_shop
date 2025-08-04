@@ -31,7 +31,9 @@ const HomeScreen = () => {
   }, [dispatch]);
 
   // Move to all products page
-  const handleViewAllProducts = () => {};
+  const handleViewAllProducts = () => {
+    window.location.href = "/products";
+  };
 
   const handleCategoryGridSelect = (category) => {
     setActiveCategory(category);

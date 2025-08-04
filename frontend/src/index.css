@@ -135,3 +135,8 @@ h2 {
 .btn input[type="radio"] {
   display: none !important;
 }
+
+.page-link {
+  border-radius: 8px;
+  margin-left: 0.1rem;
+}
