@@ -1,5 +1,6 @@
 /* Luna: HomeScreen 
-Vài components được sử dụng trong đây sử dụng static path
+
+k1en: Vài components được sử dụng trong đây sử dụng static path
 */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +17,7 @@ import { saleUtils } from "../utils/saleUtils"; // Import saleUtils
 import { Carousel } from "react-bootstrap";
 import OnlyOnline from "../components/OnlyOnline";
 import ProductCard from "../components/ProductCard";
+import DarkButton from "../components/StyledButton";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -29,7 +31,9 @@ const HomeScreen = () => {
   }, [dispatch]);
 
   // Move to all products page
-  const handleViewAllProducts = () => {};
+  const handleViewAllProducts = () => {
+    window.location.href = "/products";
+  };
 
   const handleCategoryGridSelect = (category) => {
     setActiveCategory(category);
@@ -41,6 +45,11 @@ const HomeScreen = () => {
   };
   // Filter products based on active category
   const getFilteredProducts = () => {
+    // Guard clause - return empty array if products is undefined
+    if (!products || !Array.isArray(products)) {
+      return [];
+    }
+
     if (activeCategory === "all") {
       return products;
     }
@@ -130,29 +139,18 @@ const HomeScreen = () => {
             </Row>
           </>
         )}
-        <Button
-          variant="primary"
+        <DarkButton
           onClick={handleViewAllProducts}
-          className="ms-3"
           style={{
-            borderRadius: "8px",
             margin: "3rem auto",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            minWidth: "150px",
-            height: "40px",
-            transition: "all 0.2s ease",
           }}
-          onMouseEnter={(e) => {
-            e.target.style.textDecoration = "underline";
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.textDecoration = "none";
-          }}
+          size="medium"
         >
           Xem thêm
-        </Button>
+        </DarkButton>
       </Container>
       <FullWidthWrapper>
         <StyledCarousel pause="hover">
