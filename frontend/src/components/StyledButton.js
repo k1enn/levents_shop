@@ -71,6 +71,7 @@ const DarkButton = ({
   disabled,
   className,
   size = "medium",
+  variant, // Extract variant to prevent it from being passed to DOM
   ...props
 }) => {
   return (

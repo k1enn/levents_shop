@@ -28,7 +28,7 @@ const products = [
     description:
       "Premium cotton basic tee with a comfortable fit. Perfect for everyday wear with breathable fabric and durable stitching.",
     category: "female",
-    price: 29.99,
+    price: 150000,
     rating: 5,
     countInStock: 50,
     isActive: true,
@@ -46,7 +46,7 @@ const products = [
     sale: {
       isOnSale: true,
       saleType: "percentage",
-      saleValue: 25,
+      saleValue: 10,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -57,7 +57,7 @@ const products = [
     description:
       "Modern slim fit jeans in dark wash denim. Features stretch fabric for comfort and versatile styling options.",
     category: "female",
-    price: 79.99,
+    price: 450000,
     rating: 5,
     countInStock: 35,
     isActive: true,
@@ -74,7 +74,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -85,7 +85,7 @@ const products = [
     description:
       "Light and airy summer dress with floral print. Features a flattering A-line cut and comfortable cotton blend fabric.",
     category: "female",
-    price: 89.99,
+    price: 500000,
     rating: 5,
     countInStock: 25,
     isActive: true,
@@ -102,7 +102,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -113,7 +113,7 @@ const products = [
     description:
       "Elegant winter coat with wool blend fabric. Features double-breasted buttons and a warm inner lining.",
     category: "jacket",
-    price: 199.99,
+    price: 2500000,
     rating: 5,
     countInStock: 15,
     isActive: true,
@@ -131,7 +131,7 @@ const products = [
     sale: {
       isOnSale: true,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -142,7 +142,7 @@ const products = [
     description:
       "Moisture-wicking athletic hoodie perfect for workouts or casual wear. Features zippered pockets and thumb holes.",
     category: "female",
-    price: 69.99,
+    price: 400000,
     rating: 5,
     countInStock: 40,
     isActive: true,
@@ -159,7 +159,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -170,7 +170,7 @@ const products = [
     description:
       "Elegant silk blouse with delicate detailing. Perfect for formal occasions or office wear.",
     category: "female",
-    price: 119.99,
+    price: 1200000,
     rating: 5,
     countInStock: 20,
     isActive: true,
@@ -187,7 +187,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -198,7 +198,7 @@ const products = [
     description:
       "Comfortable linen shorts perfect for summer. Features multiple pockets and an elastic waistband.",
     category: "female",
-    price: 49.99,
+    price: 250000,
     rating: 5,
     countInStock: 30,
     isActive: true,
@@ -215,7 +215,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -226,7 +226,7 @@ const products = [
     description:
       "Ultra-soft yoga leggings with high waistband and moisture-wicking technology. Perfect for workouts or casual wear.",
     category: "female",
-    price: 54.99,
+    price: 300000,
     rating: 4,
     countInStock: 45,
     isActive: true,
@@ -255,7 +255,7 @@ const products = [
     description:
       "Genuine leather belt with classic buckle design. Adjustable and perfect for both casual and formal occasions.",
     category: "accessory",
-    price: 39.99,
+    price: 200000,
     rating: 4,
     countInStock: 60,
     isActive: true,
@@ -272,7 +272,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -283,7 +283,7 @@ const products = [
     description:
       "Classic vintage-style denim jacket with distressed details. Perfect layering piece for any season.",
     category: "jacket",
-    price: 89.99,
+    price: 550000,
     rating: 5,
     countInStock: 22,
     isActive: true,
@@ -300,7 +300,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -311,7 +311,7 @@ const products = [
     description:
       "Luxurious silk scarf with floral pattern. Versatile accessory that can be worn multiple ways.",
     category: "accessory",
-    price: 34.99,
+    price: 180000,
     rating: 4,
     countInStock: 35,
     isActive: true,
@@ -328,7 +328,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -339,7 +339,7 @@ const products = [
     description:
       "Professional dress shirt made from wrinkle-resistant fabric. Features spread collar and French cuffs.",
     category: "male",
-    price: 65.99,
+    price: 380000,
     rating: 5,
     countInStock: 28,
     isActive: true,
@@ -368,7 +368,7 @@ const products = [
     description:
       "Elegant pencil skirt in stretchy fabric. Perfect for office wear with a flattering high-waisted design.",
     category: "female",
-    price: 45.99,
+    price: 280000,
     rating: 4,
     countInStock: 32,
     isActive: true,
@@ -385,7 +385,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -396,7 +396,7 @@ const products = [
     description:
       "Classic baseball cap with adjustable strap. Made from durable cotton with embroidered logo.",
     category: "accessory",
-    price: 24.99,
+    price: 120000,
     rating: 4,
     countInStock: 55,
     isActive: true,
@@ -413,7 +413,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -424,7 +424,7 @@ const products = [
     description:
       "Premium cotton polo shirt with ribbed collar and cuffs. Available in multiple colors for versatile styling.",
     category: "male",
-    price: 42.99,
+    price: 260000,
     rating: 5,
     countInStock: 40,
     isActive: true,
@@ -441,7 +441,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -452,7 +452,7 @@ const products = [
     description:
       "Soft knit cardigan with button closure. Perfect for layering in cooler weather with a comfortable fit.",
     category: "female",
-    price: 59.99,
+    price: 350000,
     rating: 4,
     countInStock: 25,
     isActive: true,
@@ -469,7 +469,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -480,7 +480,7 @@ const products = [
     description:
       "Modern bomber jacket with ribbed cuffs and hem. Lightweight yet warm with a sleek urban design.",
     category: "jacket",
-    price: 95.99,
+    price: 600000,
     rating: 5,
     countInStock: 18,
     isActive: true,
@@ -497,7 +497,7 @@ const products = [
     sale: {
       isOnSale: true,
       saleType: "fixed",
-      saleValue: 25,
+      saleValue: 100000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -508,7 +508,7 @@ const products = [
     description:
       "Stylish ankle boots with block heel. Made from premium materials with comfortable cushioned insole.",
     category: "female",
-    price: 79.99,
+    price: 480000,
     rating: 4,
     countInStock: 30,
     isActive: true,
@@ -525,7 +525,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -536,7 +536,7 @@ const products = [
     description:
       "Versatile chino pants in classic fit. Made from cotton twill with clean tailoring for smart-casual looks.",
     category: "male",
-    price: 55.99,
+    price: 320000,
     rating: 4,
     countInStock: 35,
     isActive: true,
@@ -553,7 +553,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -564,7 +564,7 @@ const products = [
     description:
       "Warm crew neck sweater in merino wool blend. Classic fit with ribbed trim for a timeless look.",
     category: "male",
-    price: 85.99,
+    price: 520000,
     rating: 5,
     countInStock: 22,
     isActive: true,
@@ -581,7 +581,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -592,7 +592,7 @@ const products = [
     description:
       "Flattering wrap dress in jersey fabric. Features three-quarter sleeves and a tie waist for an elegant silhouette.",
     category: "female",
-    price: 74.99,
+    price: 450000,
     rating: 4,
     countInStock: 28,
     isActive: true,
@@ -609,7 +609,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -620,7 +620,7 @@ const products = [
     description:
       "Trendy graphic print t-shirt made from soft cotton blend. Features unique artwork and comfortable regular fit.",
     category: "male",
-    price: 35.99,
+    price: 220000,
     rating: 4,
     countInStock: 42,
     isActive: true,
@@ -637,7 +637,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },
@@ -648,7 +648,7 @@ const products = [
     description:
       "Classic straight-leg jeans in premium denim. Features five-pocket design and reinforced stitching for durability.",
     category: "male",
-    price: 72.99,
+    price: 440000,
     rating: 5,
     countInStock: 38,
     isActive: true,
@@ -665,7 +665,7 @@ const products = [
     sale: {
       isOnSale: false,
       saleType: "fixed",
-      saleValue: 50,
+      saleValue: 200000,
       saleStartDate: new Date("2025-07-30"),
       saleEndDate: new Date("2026-01-30"),
     },

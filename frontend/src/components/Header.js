@@ -142,7 +142,7 @@ const Header = () => {
       </Navbar>
 
       {/* Custom CSS */}
-      <style jsx>{`
+      <style jsx="true">{`
         .custom-navbar {
           background-color: white !important;
           border-bottom: 1px solid #dee2e6;

@@ -20,6 +20,7 @@ import ProductEditScreen from "./screens/ProductEditScreen";
 import ProductCreateScreen from "./screens/ProductCreateScreen";
 import ProductsScreen from "./screens/ProductsScreen";
 import OrderListScreen from "./screens/OrderListScreen";
+import OrderSuccessScreen from "./screens/OrderSuccessScreen";
 
 const AppContent = () => {
   const location = useLocation();
@@ -40,6 +41,7 @@ const AppContent = () => {
           <Route path="/shipping" component={ShippingScreen} />
           <Route path="/payment" component={PaymentScreen} />
           <Route path="/placeorder" component={PlaceOrderScreen} />
+          <Route path="/order-success" component={OrderSuccessScreen} />
           <Route path="/order/:id" component={OrderScreen} />
           <Route path="/products" component={ProductsScreen} />
           <Route path="/search/:keyword" component={ProductsScreen} />

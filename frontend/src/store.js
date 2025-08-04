@@ -9,8 +9,8 @@ import {
   productUpdateReducer,
 } from "./reducers/productReducers";
 import { cartReducer } from "./reducers/cartReducers";
-import { 
-  userLoginReducer, 
+import {
+  userLoginReducer,
   userRegisterReducer,
   userDetailsReducer,
   userUpdateProfileReducer,
@@ -26,6 +26,10 @@ import {
   orderListMyReducer,
   orderListReducer,
 } from "./reducers/orderReducers";
+import {
+  momoPaymentCreateReducer,
+  momoPaymentStatusReducer,
+} from "./reducers/momoReducers";
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -47,6 +51,8 @@ const reducer = combineReducers({
   orderDeliver: orderDeliverReducer,
   orderListMy: orderListMyReducer,
   orderList: orderListReducer,
+  momoPaymentCreate: momoPaymentCreateReducer,
+  momoPaymentStatus: momoPaymentStatusReducer,
 });
 
 // Fetch Cart data from local storage
@@ -64,11 +70,17 @@ const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
   ? JSON.parse(localStorage.getItem("shippingAddress"))
   : {};
 
+// Fetch Payment Method from local storage
+const paymentMethodFromStorage = localStorage.getItem("paymentMethod")
+  ? JSON.parse(localStorage.getItem("paymentMethod"))
+  : null;
+
 const initialState = {
   // Get cart item and later on have a token in a initial state
-  cart: { 
+  cart: {
     cartItems: cartItemsFromStorage,
     shippingAddress: shippingAddressFromStorage,
+    paymentMethod: paymentMethodFromStorage,
   },
   userLogin: { userInfo: userInfoFromStorage },
 };
