@@ -10,7 +10,6 @@ const Paginate = ({
   isProductsPage = false,
 }) => {
   const buildPageUrl = (pageNum) => {
-    // Admin will have its own pagination component
     if (isAdmin) {
       return `/admin/productlist/${pageNum}`;
     }

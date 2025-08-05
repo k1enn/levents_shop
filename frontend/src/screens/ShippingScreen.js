@@ -35,19 +35,19 @@ const ShippingScreen = ({ history }) => {
     const newErrors = {};
 
     if (!address.trim()) {
-      newErrors.address = "Address is required";
+      newErrors.address = "Địa chỉ là bắt buộc";
     }
 
     if (!city.trim()) {
-      newErrors.city = "City is required";
+      newErrors.city = "Thành phố là bắt buộc";
     }
 
     if (!postalCode.trim()) {
-      newErrors.postalCode = "Postal code is required";
+      newErrors.postalCode = "Mã bưu điện là bắt buộc";
     }
 
     if (!country.trim()) {
-      newErrors.country = "Country is required";
+      newErrors.country = "Quốc gia là bắt buộc";
     }
 
     return newErrors;
@@ -73,13 +73,13 @@ const ShippingScreen = ({ history }) => {
   return (
     <FormContainer>
       <CheckoutSteps step1 step2 />
-      <h1>Shipping</h1>
+      <h1>Thông tin giao hàng</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="address">
-          <Form.Label>Address</Form.Label>
+          <Form.Label>Địa chỉ</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter address"
+            placeholder="Nhập địa chỉ"
             value={address}
             onChange={(e) => {
               setAddress(e.target.value);
@@ -93,10 +93,10 @@ const ShippingScreen = ({ history }) => {
         </Form.Group>
 
         <Form.Group controlId="city">
-          <Form.Label>City</Form.Label>
+          <Form.Label>Thành phố</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter city"
+            placeholder="Nhập thành phố"
             value={city}
             onChange={(e) => {
               setCity(e.target.value);
@@ -110,10 +110,10 @@ const ShippingScreen = ({ history }) => {
         </Form.Group>
 
         <Form.Group controlId="postalCode">
-          <Form.Label>Postal Code</Form.Label>
+          <Form.Label>Mã bưu điện</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter postal code"
+            placeholder="Nhập mã bưu điện"
             value={postalCode}
             onChange={(e) => {
               setPostalCode(e.target.value);
@@ -127,10 +127,10 @@ const ShippingScreen = ({ history }) => {
         </Form.Group>
 
         <Form.Group controlId="country">
-          <Form.Label>Country</Form.Label>
+          <Form.Label>Quốc gia</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter country"
+            placeholder="Nhập quốc gia"
             value={country}
             onChange={(e) => {
               setCountry(e.target.value);
@@ -144,7 +144,7 @@ const ShippingScreen = ({ history }) => {
         </Form.Group>
 
         <DarkButton type="submit" variant="primary">
-          Continue
+          Tiếp tục
         </DarkButton>
       </Form>
     </FormContainer>

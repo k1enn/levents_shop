@@ -5,25 +5,25 @@ const getSizeStyles = (size) => {
   switch (size) {
     case "small":
       return `
-        padding: 8px 16px;
-        font-size: 12px;
-        min-width: 120px;
-        border-radius: 8px;
+        padding: 7.2px 14.4px;
+        font-size: 10.8px;
+        min-width: 108px;
+        border-radius: 7.2px;
       `;
     case "large":
       return `
-        padding: 20px 40px;
-        font-size: 18px;
-        min-width: 240px;
-        border-radius: 16px;
+        padding: 18px 36px;
+        font-size: 16.2px;
+        min-width: 216px;
+        border-radius: 14.4px;
       `;
     case "medium":
     default:
       return `
-        padding: 13px 26px;
-        font-size: 13px;
-        min-width: 160px;
-        border-radius: 10px;
+        padding: 11.7px 23.4px;
+        font-size: 11.7px;
+        min-width: 144px;
+        border-radius: 9px;
       `;
   }
 };
@@ -71,6 +71,7 @@ const DarkButton = ({
   disabled,
   className,
   size = "medium",
+  variant, // Extract variant to prevent it from being passed to DOM
   ...props
 }) => {
   return (

@@ -5,6 +5,7 @@ A full-stack e-commerce application built with the MERN stack (MongoDB, Express.
 ## 🚀 Features
 
 ### Customer Features
+
 - **Product Browsing**: Browse products with search and filtering
 - **Shopping Cart**: Add/remove items, update quantities
 - **User Authentication**: Register, login, and profile management
@@ -13,6 +14,7 @@ A full-stack e-commerce application built with the MERN stack (MongoDB, Express.
 - **Responsive Design**: Mobile-friendly interface
 
 ### Admin Features
+
 - **Product Management**: Create, edit, delete products
 - **Order Management**: View all orders, mark as delivered
 - **User Management**: View and manage user accounts
@@ -22,6 +24,7 @@ A full-stack e-commerce application built with the MERN stack (MongoDB, Express.
 ## 🛠️ Tech Stack
 
 ### Backend
+
 - **Node.js** with Express.js
 - **MongoDB** with Mongoose ODM
 - **JWT** for authentication
@@ -29,6 +32,7 @@ A full-stack e-commerce application built with the MERN stack (MongoDB, Express.
 - **Morgan** for logging
 
 ### Frontend
+
 - **React.js** with hooks
 - **Redux** for state management
 - **React Bootstrap** for UI components
@@ -69,6 +73,7 @@ proshop/
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Node.js (v14 or higher)
 - MongoDB
 - npm or yarn
@@ -76,16 +81,18 @@ proshop/
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd proshop
    ```
 
 2. **Install dependencies**
+
    ```bash
    # Install backend dependencies
    npm install
-   
+
    # Install frontend dependencies
    cd frontend
    npm install
@@ -94,6 +101,7 @@ proshop/
 
 3. **Environment Setup**
    Create a `.env` file in the root directory:
+
    ```env
    NODE_ENV=development
    PORT=5000
@@ -103,20 +111,22 @@ proshop/
    ```
 
 4. **Database Setup**
+
    ```bash
    # Import sample data
    npm run data:import
    ```
 
 5. **Start the application**
+
    ```bash
    # Development mode (runs both frontend and backend)
    npm run dev
-   
+
    # Or run separately:
    # Backend only
    npm run server
-   
+
    # Frontend only
    npm run client
    ```
@@ -124,6 +134,7 @@ proshop/
 ## 📱 Available Routes
 
 ### Customer Routes
+
 - `/` - Home page
 - `/login` - User login
 - `/register` - User registration
@@ -136,6 +147,7 @@ proshop/
 - `/order/:id` - Order details
 
 ### Admin Routes
+
 - `/admin/productlist` - Product management
 - `/admin/product/:id/edit` - Edit product
 - `/admin/userlist` - User management
@@ -145,6 +157,7 @@ proshop/
 ## 🔧 API Endpoints
 
 ### Products
+
 - `GET /api/products` - Get all products
 - `GET /api/products/:id` - Get product by ID
 - `POST /api/products` - Create product (Admin)
@@ -152,6 +165,7 @@ proshop/
 - `DELETE /api/products/:id` - Delete product (Admin)
 
 ### Users
+
 - `POST /api/users/login` - User login
 - `POST /api/users/register` - User registration
 - `GET /api/users/profile` - Get user profile
@@ -161,6 +175,7 @@ proshop/
 - `PUT /api/users/:id` - Update user (Admin)
 
 ### Orders
+
 - `POST /api/orders` - Create order
 - `GET /api/orders/myorders` - Get user orders
 - `GET /api/orders/:id` - Get order by ID
@@ -169,6 +184,7 @@ proshop/
 - `GET /api/orders` - Get all orders (Admin)
 
 ### Upload
+
 - `POST /api/upload` - Upload image
 
 ## 🔐 Authentication
@@ -176,7 +192,9 @@ proshop/
 The application uses JWT (JSON Web Tokens) for authentication. Admin routes require both authentication and admin privileges.
 
 ### Admin Access
+
 To create an admin user, you can either:
+
 1. Modify the user directly in the database
 2. Use the seeder script to create admin users
 3. Register normally and then update the user's `isAdmin` field to `true`
@@ -184,6 +202,7 @@ To create an admin user, you can either:
 ## 📊 Database Models
 
 ### User Model
+
 ```javascript
 {
   name: String,
@@ -195,6 +214,7 @@ To create an admin user, you can either:
 ```
 
 ### Product Model
+
 ```javascript
 {
   name: String,
@@ -212,6 +232,7 @@ To create an admin user, you can either:
 ```
 
 ### Order Model
+
 ```javascript
 {
   user: ObjectId,
@@ -228,6 +249,7 @@ To create an admin user, you can either:
 ## 🎨 Styling
 
 The application uses:
+
 - **React Bootstrap** for UI components
 - **Custom CSS** for styling
 - **Responsive design** for mobile compatibility
@@ -235,6 +257,7 @@ The application uses:
 ## 🔧 Development
 
 ### Available Scripts
+
 - `npm run dev` - Start development server (frontend + backend)
 - `npm run server` - Start backend server only
 - `npm run client` - Start frontend server only
@@ -242,6 +265,7 @@ The application uses:
 - `npm run data:destroy` - Clear database
 
 ### Code Structure
+
 - **Actions**: Redux actions for API calls
 - **Reducers**: Redux reducers for state management
 - **Components**: Reusable UI components
@@ -251,12 +275,14 @@ The application uses:
 ## 🚀 Deployment
 
 ### Backend Deployment
+
 1. Set `NODE_ENV=production`
 2. Configure MongoDB connection
 3. Set up environment variables
 4. Deploy to your preferred platform (Heroku, Vercel, etc.)
 
 ### Frontend Deployment
+
 1. Run `npm run build`
 2. Deploy the `build` folder to your hosting platform
 
@@ -275,6 +301,7 @@ This project is licensed under the MIT License.
 ## 🆘 Support
 
 For support and questions:
+
 - Check the documentation
 - Review existing issues
 - Create a new issue with detailed information
@@ -282,6 +309,7 @@ For support and questions:
 ## 🔄 Updates
 
 ### Recent Changes
+
 - Added comprehensive order management
 - Implemented admin functionality
 - Added image upload capability
@@ -290,9 +318,10 @@ For support and questions:
 - Added PayPal integration
 
 ### Future Enhancements
+
 - Real-time notifications
 - Advanced search and filtering
 - Product reviews and ratings
 - Email notifications
 - Advanced analytics
-- Mobile app development 
+- Mobile app development

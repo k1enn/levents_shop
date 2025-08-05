@@ -17,7 +17,7 @@ import {
   removeFromCart,
   removeSpecificFromCart,
 } from "../actions/cartActions";
-import { listProductDetails } from "../actions/productActions";
+import DarkButton from "../components/StyledButton";
 
 const CartScreen = ({ match, location, history }) => {
   const productId = match.params.id;
@@ -134,7 +134,7 @@ const CartScreen = ({ match, location, history }) => {
         <h1>Giỏ hàng</h1>
         {cartItems.length <= 0 && showEmptyMessage ? (
           <Message>
-            Your cart is empty <Link to="/">Go back</Link>
+            Giỏ hàng của bạn trống <Link to="/">Quay lại</Link>
           </Message>
         ) : cartItems.length > 0 ? (
           <ListGroup variant="flush">
@@ -154,9 +154,9 @@ const CartScreen = ({ match, location, history }) => {
                       {item.name}
                       {(item.color || item.size) && (
                         <div className="text-muted small">
-                          {item.color && `Color: ${item.color}`}
+                          {item.color && `Màu: ${item.color}`}
                           {item.color && item.size && " | "}
-                          {item.size && `Size: ${item.size}`}
+                          {item.size && `Kích thước: ${item.size}`}
                         </div>
                       )}
                     </Link>
@@ -290,11 +290,11 @@ const CartScreen = ({ match, location, history }) => {
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>
-                Subtotal (
+                Tổng cộng (
                 {
                   cartItems.reduce((acc, item) => acc + item.qty, 0) // Subtotal
                 }
-                ) items
+                ) sản phẩm
               </h2>
               $
               {cartItems // Total money
@@ -302,14 +302,14 @@ const CartScreen = ({ match, location, history }) => {
                 .toFixed(2)}
             </ListGroup.Item>
             <ListGroup.Item>
-              <Button
+              <DarkButton
                 type="button"
                 className="btn-block"
                 disabled={cartItems.length === 0}
                 onClick={checkoutHandler}
               >
-                Proceed To Checkout
-              </Button>
+                Tiến hành thanh toán
+              </DarkButton>
             </ListGroup.Item>
           </ListGroup>
         </Card>

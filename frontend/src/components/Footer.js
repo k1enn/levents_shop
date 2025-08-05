@@ -8,7 +8,7 @@ const Footer = () => {
         <Row>
           {/* Contact Section */}
           <Col md={3} sm={6} xs={12} className="mb-3">
-            <h6 className="fw-bold mb-3">Contact us:</h6>
+            <h6 className="fw-bold mb-3">Liên hệ với chúng tôi:</h6>
             <p className="mb-1">
               <small>Hotline: 1800636516</small>
             </p>

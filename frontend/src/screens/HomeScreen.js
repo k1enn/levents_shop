@@ -37,7 +37,7 @@ const HomeScreen = () => {
 
   const handleCategoryGridSelect = (category) => {
     setActiveCategory(category);
-    // Smooth scroll to products section
+    // Cuộn mượt đến phần sản phẩm
     const productsSection = document.getElementById("products-section");
     if (productsSection) {
       productsSection.scrollIntoView({ behavior: "smooth" });

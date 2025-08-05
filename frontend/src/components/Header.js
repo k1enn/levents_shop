@@ -8,10 +8,10 @@ import {
   Container,
   NavDropdown,
   Form,
-  InputGroup,
   Button,
 } from "react-bootstrap";
 import { logout } from "../actions/userActions";
+import InputBar from "./InputBar";
 
 const Header = () => {
   const [keyword, setKeyword] = useState("");
@@ -51,7 +51,7 @@ const Header = () => {
           <Navbar.Collapse id="basic-navbar-nav">
             {/* Left side navigation items */}
             <Nav className="me-auto">
-              <LinkContainer to="/products">
+              <LinkContainer to="/products" st>
                 <Nav.Link className="text-dark">Sản phẩm</Nav.Link>
               </LinkContainer>
               <LinkContainer to="/products?category=male">
@@ -71,22 +71,53 @@ const Header = () => {
             {/* Right side - Search, Account, Cart */}
             <Nav className="ms-auto d-flex align-items-center">
               {/* Search Bar */}
-              <Form className="d-flex me-3" onSubmit={searchSubmitHandler}>
-                <InputGroup>
-                  <Form.Control
-                    type="search"
-                    placeholder="Tìm kiếm..."
-                    className="me-2"
-                    aria-label="Search"
-                    style={{ minWidth: "200px" }}
-                    value={keyword}
-                    onChange={(e) => setKeyword(e.target.value)}
-                  />
-                  <Button variant="outline-dark" type="submit">
-                    <i className="fas fa-search"></i>
-                  </Button>
-                </InputGroup>
+              <Form
+                className="d-flex align-items-center me-3 d-none d-md-flex"
+                onSubmit={searchSubmitHandler}
+              >
+                <InputBar
+                  placeholder="Tìm kiếm..."
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  width="200px"
+                  height="38px"
+                  backgroundColor="#f8f9fa"
+                  borderRadius="8px"
+                  border="1px solid #ced4da"
+                  style={{
+                    marginBottom: "0",
+                    marginRight: "8px",
+                    minWidth: "150px",
+                    maxWidth: "250px",
+                  }}
+                />
+                <Button
+                  type="submit"
+                  style={{
+                    height: "38px",
+                    backgroundColor: "#ffffffff",
+                    color: "black",
+                    marginBottom: "4px",
+                    paddingLeft: "0.4rem",
+                  }}
+                >
+                  <i className="fas fa-search"></i>
+                </Button>
               </Form>
+
+              {/* Mobile Search Button */}
+              <Nav.Link
+                className="text-dark me-3 d-md-none"
+                onClick={() => {
+                  // You can implement a mobile search modal here
+                  const searchTerm = prompt("Tìm kiếm sản phẩm:");
+                  if (searchTerm && searchTerm.trim()) {
+                    history.push(`/search/${searchTerm.trim()}`);
+                  }
+                }}
+              >
+                <i className="fas fa-search"></i>
+              </Nav.Link>
 
               {/* Account */}
               {userInfo ? (
@@ -100,26 +131,26 @@ const Header = () => {
                   className="me-3"
                 >
                   <LinkContainer to="/profile">
-                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                    <NavDropdown.Item>Hồ sơ</NavDropdown.Item>
                   </LinkContainer>
                   {userInfo.isAdmin && (
                     <>
                       <NavDropdown.Divider />
 
                       <LinkContainer to="/admin/userlist">
-                        <NavDropdown.Item>Manage Users</NavDropdown.Item>
+                        <NavDropdown.Item>Quản lý người dùng</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/productlist">
-                        <NavDropdown.Item>Manage Products</NavDropdown.Item>
+                        <NavDropdown.Item>Quản lý sản phẩm</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/orderlist">
-                        <NavDropdown.Item>Manage Orders</NavDropdown.Item>
+                        <NavDropdown.Item>Quản lý đơn hàng</NavDropdown.Item>
                       </LinkContainer>
                       <NavDropdown.Divider />
                     </>
                   )}
                   <NavDropdown.Item onClick={logoutHandler}>
-                    Log Out
+                    Đăng xuất
                   </NavDropdown.Item>
                 </NavDropdown>
               ) : (
@@ -142,7 +173,7 @@ const Header = () => {
       </Navbar>
 
       {/* Custom CSS */}
-      <style jsx>{`
+      <style jsx="true">{`
         .custom-navbar {
           background-color: white !important;
           border-bottom: 1px solid #dee2e6;
@@ -161,6 +192,22 @@ const Header = () => {
         }
         .dropdown-toggle::after {
           display: none;
+        }
+
+        /* Responsive improvements */
+        @media (max-width: 767.98px) {
+          .custom-navbar .navbar-nav .nav-link {
+            padding: 0.5rem 0.75rem;
+          }
+          .custom-navbar .navbar-brand {
+            font-size: 1.25rem;
+          }
+        }
+
+        @media (max-width: 575.98px) {
+          .custom-navbar .navbar-brand {
+            font-size: 1.1rem;
+          }
         }
       `}</style>
     </header>

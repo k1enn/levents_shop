@@ -34,7 +34,7 @@ const ProductListScreen = ({ history, match }, index) => {
   }, [dispatch, history, userInfo, successDelete, pageNumber]);
 
   const deleteHandler = (id) => {
-    if (window.confirm("Are you sure")) {
+    if (window.confirm("Bạn có chắc chắn?")) {
       dispatch(deleteProduct(id));
     }
   };
@@ -47,11 +47,11 @@ const ProductListScreen = ({ history, match }, index) => {
     <>
       <Row className="align-items-center">
         <Col>
-          <h1>Products</h1>
+          <h1>Sản phẩm</h1>
         </Col>
         <Col className="text-right">
           <Button className="my-3" onClick={createProductHandler}>
-            <i className="fas fa-plus"></i> Create Product
+            <i className="fas fa-plus"></i> Tạo sản phẩm
           </Button>
         </Col>
       </Row>

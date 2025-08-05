@@ -117,74 +117,78 @@ const ProductEditScreen = ({ match, history }) => {
 
     // Validation
     if (!name.trim()) {
-      alert("Product name is required");
+      alert("Tên sản phẩm là bắt buộc");
       return;
     }
 
     if (!category) {
-      alert("Please select a category");
+      alert("Vui lòng chọn danh mục");
       return;
     }
 
     if (!description.trim()) {
-      alert("Product description is required");
+      alert("Mô tả sản phẩm là bắt buộc");
       return;
     }
 
     if (price <= 0) {
-      alert("Price must be greater than 0");
+      alert("Giá phải lớn hơn 0");
       return;
     }
 
     if (countInStock < 0) {
-      alert("Count in stock cannot be negative");
+      alert("Số lượng tồn kho không thể âm");
       return;
     }
 
     if (!image.trim()) {
-      alert("Product image is required");
+      alert("Hình ảnh sản phẩm là bắt buộc");
       return;
     }
 
     if (colors.length === 0) {
-      alert("Product must have at least one color option");
+      alert("Sản phẩm phải có ít nhất một tùy chọn màu");
       return;
     }
 
     if (sizes.length === 0) {
-      alert("Product must have at least one size option");
+      alert("Sản phẩm phải có ít nhất một tùy chọn kích thước");
       return;
     }
 
     // Sale validation
     if (isOnSale) {
       if (!saleValue || saleValue <= 0) {
-        alert("Sale value must be greater than 0 when product is on sale");
+        alert("Giá trị khuyến mãi phải lớn hơn 0 khi sản phẩm đang giảm giá");
         return;
       }
 
       if (saleType === "percentage" && saleValue > 100) {
-        alert("Percentage discount cannot exceed 100%");
+        alert("Phần trăm giảm giá không thể vượt quá 100%");
         return;
       }
 
       if (saleType === "fixed" && saleValue >= price) {
-        alert("Fixed discount cannot exceed or equal product price");
+        alert(
+          "Số tiền giảm giá cố định không thể vượt quá hoặc bằng giá sản phẩm"
+        );
         return;
       }
 
       if (!saleStartDate) {
-        alert("Sale start date is required when product is on sale");
+        alert("Ngày bắt đầu khuyến mãi là bắt buộc khi sản phẩm đang giảm giá");
         return;
       }
 
       if (!saleEndDate) {
-        alert("Sale end date is required when product is on sale");
+        alert(
+          "Ngày kết thúc khuyến mãi là bắt buộc khi sản phẩm đang giảm giá"
+        );
         return;
       }
 
       if (new Date(saleEndDate) <= new Date(saleStartDate)) {
-        alert("Sale end date must be after sale start date");
+        alert("Ngày kết thúc khuyến mãi phải sau ngày bắt đầu khuyến mãi");
         return;
       }
     }
@@ -226,7 +230,7 @@ const ProductEditScreen = ({ match, history }) => {
 
   const removeColor = (index) => {
     if (colors.length <= 1) {
-      alert("Product must have at least one color option");
+      alert("Sản phẩm phải có ít nhất một tùy chọn màu");
       return;
     }
     setColors(colors.filter((_, i) => i !== index));
@@ -246,7 +250,7 @@ const ProductEditScreen = ({ match, history }) => {
 
   const removeSize = (index) => {
     if (sizes.length <= 1) {
-      alert("Product must have at least one size option");
+      alert("Sản phẩm phải có ít nhất một tùy chọn kích thước");
       return;
     }
     setSizes(sizes.filter((_, i) => i !== index));
@@ -255,10 +259,10 @@ const ProductEditScreen = ({ match, history }) => {
   return (
     <>
       <Link to="/admin/productlist" className="btn btn-light my-3">
-        Go Back
+        Quay lại
       </Link>
       <FormContainer>
-        <h1>Edit Product</h1>
+        <h1>Chỉnh sửa sản phẩm</h1>
         {loadingUpdate && <Loader />}
         {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
         {loading ? (
@@ -268,10 +272,10 @@ const ProductEditScreen = ({ match, history }) => {
         ) : (
           <Form onSubmit={submitHandler}>
             <Form.Group controlId="name">
-              <Form.Label>Name *</Form.Label>
+              <Form.Label>Tên *</Form.Label>
               <Form.Control
                 type="name"
-                placeholder="Enter name"
+                placeholder="Nhập tên"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -279,10 +283,10 @@ const ProductEditScreen = ({ match, history }) => {
             </Form.Group>
 
             <Form.Group controlId="price">
-              <Form.Label>Price *</Form.Label>
+              <Form.Label>Giá *</Form.Label>
               <Form.Control
                 type="number"
-                placeholder="Enter price"
+                placeholder="Nhập giá"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 min="0.01"
@@ -292,17 +296,17 @@ const ProductEditScreen = ({ match, history }) => {
             </Form.Group>
 
             <Form.Group controlId="image">
-              <Form.Label>Image *</Form.Label>
+              <Form.Label>Hình ảnh *</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter image url"
+                placeholder="Nhập URL hình ảnh"
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
                 required
               ></Form.Control>
               <Form.File
                 id="image-file"
-                label="Choose File"
+                label="Chọn tệp"
                 custom
                 onChange={uploadFileHandler}
               ></Form.File>
@@ -310,10 +314,10 @@ const ProductEditScreen = ({ match, history }) => {
             </Form.Group>
 
             <Form.Group controlId="countInStock">
-              <Form.Label>Count In Stock *</Form.Label>
+              <Form.Label>Số lượng tồn kho *</Form.Label>
               <Form.Control
                 type="number"
-                placeholder="Enter countInStock"
+                placeholder="Nhập số lượng tồn kho"
                 value={countInStock}
                 onChange={(e) => setCountInStock(e.target.value)}
                 min="0"
@@ -322,27 +326,27 @@ const ProductEditScreen = ({ match, history }) => {
             </Form.Group>
 
             <Form.Group controlId="category">
-              <Form.Label>Category *</Form.Label>
+              <Form.Label>Danh mục *</Form.Label>
               <Form.Control
                 as="select"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 required
               >
-                <option value="">Select Category</option>
-                <option value="female">Female</option>
-                <option value="male">Male</option>
-                <option value="jacket">Jacket</option>
-                <option value="accessory">Accessory</option>
+                <option value="">Chọn danh mục</option>
+                <option value="female">Nữ</option>
+                <option value="male">Nam</option>
+                <option value="jacket">Áo khoác</option>
+                <option value="accessory">Phụ kiện</option>
               </Form.Control>
             </Form.Group>
 
             <Form.Group controlId="description">
-              <Form.Label>Description *</Form.Label>
+              <Form.Label>Mô tả *</Form.Label>
               <Form.Control
                 as="textarea"
                 rows={3}
-                placeholder="Enter description"
+                placeholder="Nhập mô tả"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
@@ -352,7 +356,7 @@ const ProductEditScreen = ({ match, history }) => {
             <Form.Group controlId="isActive">
               <Form.Check
                 type="checkbox"
-                label="Product is Active"
+                label="Sản phẩm đang hoạt động"
                 checked={isActive}
                 onChange={(e) => setIsActive(e.target.checked)}
               />
@@ -360,7 +364,7 @@ const ProductEditScreen = ({ match, history }) => {
 
             {/* Colors Section */}
             <Form.Group>
-              <Form.Label>Colors</Form.Label>
+              <Form.Label>Màu sắc</Form.Label>
               {colors.map((color, index) => (
                 <div key={index} className="d-flex align-items-center mb-2">
                   <Form.Control
@@ -371,13 +375,13 @@ const ProductEditScreen = ({ match, history }) => {
                     }
                     className="mr-2"
                   >
-                    <option value="blue">Blue</option>
-                    <option value="black">Black</option>
-                    <option value="pink">Pink</option>
+                    <option value="blue">Xanh dương</option>
+                    <option value="black">Đen</option>
+                    <option value="pink">Hồng</option>
                   </Form.Control>
                   <Form.Check
                     type="checkbox"
-                    label="Available"
+                    label="Có sẵn"
                     checked={color.isAvailable}
                     onChange={(e) =>
                       updateColor(index, "isAvailable", e.target.checked)
@@ -389,18 +393,18 @@ const ProductEditScreen = ({ match, history }) => {
                     size="sm"
                     onClick={() => removeColor(index)}
                   >
-                    Remove
+                    Xóa
                   </Button>
                 </div>
               ))}
               <Button variant="secondary" onClick={addColor}>
-                Add Color
+                Thêm màu
               </Button>
             </Form.Group>
 
             {/* Sizes Section */}
             <Form.Group>
-              <Form.Label>Sizes</Form.Label>
+              <Form.Label>Kích thước</Form.Label>
               {sizes.map((size, index) => (
                 <div key={index} className="d-flex align-items-center mb-2">
                   <Form.Control
@@ -417,7 +421,7 @@ const ProductEditScreen = ({ match, history }) => {
                   </Form.Control>
                   <Form.Check
                     type="checkbox"
-                    label="Available"
+                    label="Có sẵn"
                     checked={size.isAvailable}
                     onChange={(e) =>
                       updateSize(index, "isAvailable", e.target.checked)
@@ -429,12 +433,12 @@ const ProductEditScreen = ({ match, history }) => {
                     size="sm"
                     onClick={() => removeSize(index)}
                   >
-                    Remove
+                    Xóa
                   </Button>
                 </div>
               ))}
               <Button variant="secondary" onClick={addSize}>
-                Add Size
+                Thêm kích thước
               </Button>
             </Form.Group>
 
@@ -442,7 +446,7 @@ const ProductEditScreen = ({ match, history }) => {
             <Form.Group controlId="isOnSale">
               <Form.Check
                 type="checkbox"
-                label="Product is on Sale"
+                label="Sản phẩm đang khuyến mãi"
                 checked={isOnSale}
                 onChange={(e) => setIsOnSale(e.target.checked)}
               />
@@ -451,25 +455,26 @@ const ProductEditScreen = ({ match, history }) => {
             {isOnSale && (
               <>
                 <Form.Group controlId="saleType">
-                  <Form.Label>Sale Type</Form.Label>
+                  <Form.Label>Loại khuyến mãi</Form.Label>
                   <Form.Control
                     as="select"
                     value={saleType}
                     onChange={(e) => setSaleType(e.target.value)}
                   >
-                    <option value="percentage">Percentage</option>
-                    <option value="fixed">Fixed Amount</option>
+                    <option value="percentage">Phần trăm</option>
+                    <option value="fixed">Số tiền cố định</option>
                   </Form.Control>
                 </Form.Group>
 
                 <Form.Group controlId="saleValue">
                   <Form.Label>
-                    Sale Value {saleType === "percentage" ? "(%)" : "($)"}
+                    Giá trị khuyến mãi{" "}
+                    {saleType === "percentage" ? "(%)" : "(VND)"}
                   </Form.Label>
                   <Form.Control
                     type="number"
-                    placeholder={`Enter ${
-                      saleType === "percentage" ? "percentage" : "amount"
+                    placeholder={`Nhập ${
+                      saleType === "percentage" ? "phần trăm" : "số tiền"
                     }`}
                     value={saleValue}
                     onChange={(e) => setSaleValue(e.target.value)}
@@ -477,7 +482,7 @@ const ProductEditScreen = ({ match, history }) => {
                 </Form.Group>
 
                 <Form.Group controlId="saleStartDate">
-                  <Form.Label>Sale Start Date</Form.Label>
+                  <Form.Label>Ngày bắt đầu khuyến mãi</Form.Label>
                   <Form.Control
                     type="date"
                     value={saleStartDate}
@@ -486,7 +491,7 @@ const ProductEditScreen = ({ match, history }) => {
                 </Form.Group>
 
                 <Form.Group controlId="saleEndDate">
-                  <Form.Label>Sale End Date</Form.Label>
+                  <Form.Label>Ngày kết thúc khuyến mãi</Form.Label>
                   <Form.Control
                     type="date"
                     value={saleEndDate}
@@ -497,7 +502,7 @@ const ProductEditScreen = ({ match, history }) => {
             )}
 
             <Button type="submit" variant="primary">
-              Update
+              Cập nhật
             </Button>
           </Form>
         )}
