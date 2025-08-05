@@ -8,10 +8,10 @@ import {
   Container,
   NavDropdown,
   Form,
-  InputGroup,
   Button,
 } from "react-bootstrap";
 import { logout } from "../actions/userActions";
+import InputBar from "./InputBar";
 
 const Header = () => {
   const [keyword, setKeyword] = useState("");
@@ -71,21 +71,33 @@ const Header = () => {
             {/* Right side - Search, Account, Cart */}
             <Nav className="ms-auto d-flex align-items-center">
               {/* Search Bar */}
-              <Form className="d-flex me-3" onSubmit={searchSubmitHandler}>
-                <InputGroup>
-                  <Form.Control
-                    type="search"
-                    placeholder="Tìm kiếm..."
-                    className="me-2"
-                    aria-label="Search"
-                    style={{ minWidth: "200px" }}
-                    value={keyword}
-                    onChange={(e) => setKeyword(e.target.value)}
-                  />
-                  <Button variant="outline-dark" type="submit">
-                    <i className="fas fa-search"></i>
-                  </Button>
-                </InputGroup>
+              <Form
+                className="d-flex align-items-center me-3"
+                onSubmit={searchSubmitHandler}
+              >
+                <InputBar
+                  placeholder="Tìm kiếm..."
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  width="200px"
+                  height="38px"
+                  backgroundColor="#f8f9fa"
+                  borderRadius="8px"
+                  border="1px solid #ced4da"
+                  style={{ marginBottom: "0", marginRight: "8px" }}
+                />
+                <Button
+                  type="submit"
+                  style={{
+                    height: "38px",
+                    backgroundColor: "#ffffffff",
+                    color: "black",
+                    marginBottom: "4px",
+                    paddingLeft: "0.4rem",
+                  }}
+                >
+                  <i className="fas fa-search"></i>
+                </Button>
               </Form>
 
               {/* Account */}
@@ -100,26 +112,26 @@ const Header = () => {
                   className="me-3"
                 >
                   <LinkContainer to="/profile">
-                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                    <NavDropdown.Item>Hồ sơ</NavDropdown.Item>
                   </LinkContainer>
                   {userInfo.isAdmin && (
                     <>
                       <NavDropdown.Divider />
 
                       <LinkContainer to="/admin/userlist">
-                        <NavDropdown.Item>Manage Users</NavDropdown.Item>
+                        <NavDropdown.Item>Quản lý người dùng</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/productlist">
-                        <NavDropdown.Item>Manage Products</NavDropdown.Item>
+                        <NavDropdown.Item>Quản lý sản phẩm</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/orderlist">
-                        <NavDropdown.Item>Manage Orders</NavDropdown.Item>
+                        <NavDropdown.Item>Quản lý đơn hàng</NavDropdown.Item>
                       </LinkContainer>
                       <NavDropdown.Divider />
                     </>
                   )}
                   <NavDropdown.Item onClick={logoutHandler}>
-                    Log Out
+                    Đăng xuất
                   </NavDropdown.Item>
                 </NavDropdown>
               ) : (

@@ -132,7 +132,7 @@ const ProductScreen = ({ history, match }) => {
                       className="text-muted text-decoration-line-through ms-2 "
                       style={{
                         textDecoration: "line-through",
-                        fontSize: "0.95em",
+                        fontSize: "small",
                         padding: "0.6rem",
                       }}
                     >

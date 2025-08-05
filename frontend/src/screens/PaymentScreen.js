@@ -28,14 +28,14 @@ const PaymentScreen = ({ history }) => {
   return (
     <FormContainer>
       <CheckoutSteps step1 step2 step3 />
-      <h1>Payment Method</h1>
+      <h1>Phương thức thanh toán</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group>
-          <Form.Label as="legend">Select Method</Form.Label>
+          <Form.Label as="legend">Chọn phương thức</Form.Label>
           <Col>
             <Form.Check
               type="radio"
-              label="PayPal or Credit Card"
+              label="PayPal hoặc Thẻ tín dụng"
               id="PayPal"
               name="paymentMethod"
               value="PayPal"
@@ -44,7 +44,7 @@ const PaymentScreen = ({ history }) => {
             ></Form.Check>
             <Form.Check
               type="radio"
-              label="MoMo E-Wallet"
+              label="Ví điện tử MoMo"
               id="MoMo"
               name="paymentMethod"
               value="MoMo"
@@ -64,22 +64,22 @@ const PaymentScreen = ({ history }) => {
 
         {paymentMethod === "MoMo" && (
           <Alert variant="info" className="mt-3">
-            <Alert.Heading>MoMo E-Wallet Payment</Alert.Heading>
+            <Alert.Heading>Thanh toán bằng ví điện tử MoMo</Alert.Heading>
             <p>
-              You will be redirected to MoMo's secure payment gateway to
-              complete your transaction. Make sure you have the MoMo app
-              installed on your mobile device or access to your MoMo account.
+              Bạn sẽ được chuyển hướng đến cổng thanh toán an toàn của MoMo để
+              hoàn tất giao dịch. Hãy đảm bảo bạn đã cài đặt ứng dụng MoMo trên
+              thiết bị di động hoặc có thể truy cập vào tài khoản MoMo của bạn.
             </p>
             <hr />
             <p className="mb-0">
-              <strong>Note:</strong> This is for educational purposes only using
-              MoMo's test environment.
+              <strong>Lưu ý:</strong> Đây chỉ là mục đích giáo dục sử dụng môi
+              trường thử nghiệm của MoMo.
             </p>
           </Alert>
         )}
 
         <Button type="submit" variant="primary">
-          Continue
+          Tiếp tục
         </Button>
       </Form>
     </FormContainer>

@@ -30,64 +30,64 @@ const RegisterScreen = ({ location, history }) => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (confirmPassword !== password) {
-      setMessage("Passwords do not match");
+      setMessage("Mật khẩu không khớp");
     } else {
       dispatch(register(name, email, password));
     }
   };
   return (
     <FormContainer>
-      <h1>Sign Up</h1>
+      <h1>Đăng ký</h1>
       {message && <Message variant="danger">{message}</Message>}
       {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader></Loader>}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="name">
-          <Form.Label>Name</Form.Label>
+          <Form.Label>Tên</Form.Label>
           <Form.Control
             type="name"
-            placeholder="Enter Name"
+            placeholder="Nhập tên"
             value={name}
             onChange={(e) => setName(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="email">
-          <Form.Label>Email Address</Form.Label>
+          <Form.Label>Địa chỉ Email</Form.Label>
           <Form.Control
             type="email"
-            placeholder="Enter email"
+            placeholder="Nhập email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="password">
-          <Form.Label>Password Address</Form.Label>
+          <Form.Label>Mật khẩu</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Enter password"
+            placeholder="Nhập mật khẩu"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="confirmPassword">
-          <Form.Label>Password Address</Form.Label>
+          <Form.Label>Xác nhận mật khẩu</Form.Label>
           <Form.Control
             type="password"
-            placeholder="Confirm password"
+            placeholder="Xác nhận mật khẩu"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Button type="submit" variant="primary">
-          Register
+          Đăng ký
         </Button>
       </Form>
 
       <Row className="py-3">
         <Col>
-          Have an Account?{" "}
+          Đã có tài khoản?{" "}
           <Link to={redirect ? `/login?redirect=${redirect}` : `/login`}>
-            Register
+            Đăng nhập
           </Link>
         </Col>
       </Row>

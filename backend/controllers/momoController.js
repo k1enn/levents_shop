@@ -12,14 +12,13 @@ const createMomoPayment = asyncHandler(async (req, res) => {
 
   const { amount, orderInfo, orderId } = req.body;
 
-  // Validate required fields
+  // Validate
   if (!amount || !orderInfo || !orderId) {
     console.log("Missing required fields:", { amount, orderInfo, orderId });
     res.status(400);
     throw new Error("Missing required payment information");
   }
 
-  // MoMo configuration - using the exact values from MoMo documentation
   const accessKey = "F8BBA842ECF85";
   const secretKey = "K951B6PE1waDMi640xX08PD3vg6EkVlz";
   const partnerCode = "MOMO";
@@ -72,7 +71,6 @@ const createMomoPayment = asyncHandler(async (req, res) => {
   console.log("--------------------SIGNATURE----------------");
   console.log(signature);
 
-  // JSON object send to MoMo endpoint - exact format from MoMo docs
   const requestBody = JSON.stringify({
     partnerCode: partnerCode,
     partnerName: "Test",
@@ -94,7 +92,7 @@ const createMomoPayment = asyncHandler(async (req, res) => {
   console.log("--------------------REQUEST BODY----------------");
   console.log(requestBody);
 
-  // Create the HTTPS objects - exact format from MoMo docs
+  // HTTPS object
   const options = {
     hostname: "test-payment.momo.vn",
     port: 443,
@@ -108,7 +106,7 @@ const createMomoPayment = asyncHandler(async (req, res) => {
 
   console.log("Sending to MoMo....");
 
-  // Send the request and get the response - exact format from MoMo docs
+  // Send req
   const momoResponse = await new Promise((resolve, reject) => {
     const req = https.request(options, (momoRes) => {
       console.log(`Status: ${momoRes.statusCode}`);
@@ -122,13 +120,8 @@ const createMomoPayment = asyncHandler(async (req, res) => {
       });
 
       momoRes.on("end", () => {
-        console.log("Body: ");
-        console.log(data);
-
         try {
           const response = JSON.parse(data);
-          console.log("resultCode: ");
-          console.log(response.resultCode);
           resolve(response);
         } catch (error) {
           console.error("Error parsing MoMo response:", error);
@@ -168,6 +161,7 @@ const createMomoPayment = asyncHandler(async (req, res) => {
   }
 });
 
+// NOTE: This doesnt work at all
 // @desc    Handle MoMo IPN (Instant Payment Notification)
 // @route   POST /api/payment/momo/ipn
 // @access  Public
@@ -246,6 +240,7 @@ const handleMomoIPN = asyncHandler(async (req, res) => {
   }
 });
 
+// NOTE: This still doesnt work
 // @desc    Check MoMo payment status
 // @route   POST /api/payment/momo/status
 // @access  Private
