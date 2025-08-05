@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Product from "../models/productModel.js";
+import Order from "../models/orderModel.js";
 import mongoose from "mongoose";
 
 // @desc    Create a product
@@ -220,7 +221,7 @@ const updateProduct = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Delete a product (soft delete)
+// @desc    Delete a product with cascade delete
 // @route   DELETE /api/products/:id
 // @access  Private/Admin
 const deleteProduct = asyncHandler(async (req, res) => {
@@ -235,9 +236,26 @@ const deleteProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(id);
 
   if (product) {
-    product.isActive = false;
-    await product.save();
-    res.json({ message: "Sản phẩm đã được loại bỏ" });
+    // Check if product exists in any orders
+    const ordersWithProduct = await Order.find({
+      "orderItems.product": id,
+    });
+
+    if (ordersWithProduct.length > 0) {
+      // If product exists in orders, we should not delete it completely
+      // Instead, mark it as inactive to preserve order history
+      product.isActive = false;
+      await product.save();
+      res.json({
+        message: "Sản phẩm đã được vô hiệu hóa do tồn tại trong đơn hàng",
+        warning:
+          "Product deactivated instead of deleted due to existing orders",
+      });
+    } else {
+      // Safe to delete completely if no orders reference this product
+      await Product.findByIdAndDelete(id);
+      res.json({ message: "Sản phẩm đã được xóa hoàn toàn" });
+    }
   } else {
     res.status(404);
     throw new Error("Không tìm thấy sản phẩm");

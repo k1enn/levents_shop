@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+import InputBar from "../components/InputBar";
+import DarkButton from "../components/StyledButton";
 import { register } from "../actions/userActions.js";
 import FormContainer from "../components/FormContainer";
 
@@ -37,58 +39,70 @@ const RegisterScreen = ({ location, history }) => {
   };
   return (
     <FormContainer>
-      <h1>Đăng ký</h1>
+      <h1 className="text-center">Đăng ký</h1>
       {message && <Message variant="danger">{message}</Message>}
       {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader></Loader>}
       <Form onSubmit={submitHandler}>
-        <Form.Group controlId="name">
-          <Form.Label>Tên</Form.Label>
-          <Form.Control
-            type="name"
-            placeholder="Nhập tên"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group controlId="email">
-          <Form.Label>Địa chỉ Email</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Nhập email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group controlId="password">
-          <Form.Label>Mật khẩu</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Nhập mật khẩu"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group controlId="confirmPassword">
-          <Form.Label>Xác nhận mật khẩu</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Xác nhận mật khẩu"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        <Button type="submit" variant="primary">
-          Đăng ký
-        </Button>
+        <InputBar
+          legend="Tên"
+          type="text"
+          placeholder="Nhập tên"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <InputBar
+          legend="Địa chỉ Email"
+          type="email"
+          placeholder="Nhập email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <InputBar
+          legend="Mật khẩu"
+          type="password"
+          placeholder="Nhập mật khẩu"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <InputBar
+          legend="Xác nhận mật khẩu"
+          type="password"
+          placeholder="Xác nhận mật khẩu"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+        />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "10px",
+          }}
+        >
+          <DarkButton type="submit" size="medium">
+            Đăng ký
+          </DarkButton>
+        </div>
       </Form>
 
       <Row className="py-3">
         <Col>
-          Đã có tài khoản?{" "}
-          <Link to={redirect ? `/login?redirect=${redirect}` : `/login`}>
-            Đăng nhập
-          </Link>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "-8px",
+            }}
+          >
+            Đã có tài khoản?{" "}
+            <Link to={redirect ? `/login?redirect=${redirect}` : `/login`}>
+              Đăng nhập
+            </Link>
+          </div>
         </Col>
       </Row>
     </FormContainer>
