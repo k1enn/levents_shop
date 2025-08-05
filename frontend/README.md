@@ -1,68 +1,325 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack e-commerce application built with the MERN stack (MongoDB, Express.js, React.js, Node.js) with comprehensive admin functionality and order management.
 
-## Available Scripts
+## 🚀 Features
 
-In the project directory, you can run:
+### Customer Features
 
-### `npm start`
+- **Product Browsing**: Browse products with search and filtering
+- **Shopping Cart**: Add/remove items, update quantities
+- **User Authentication**: Register, login, and profile management
+- **Order Management**: Place orders, view order history
+- **Payment Integration**: PayPal payment processing
+- **Responsive Design**: Mobile-friendly interface
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Admin Features
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+- **Product Management**: Create, edit, delete products
+- **Order Management**: View all orders, mark as delivered
+- **User Management**: View and manage user accounts
+- **Image Upload**: Upload product images
+- **Inventory Management**: Track stock levels
 
-### `npm test`
+## 🛠️ Tech Stack
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Backend
 
-### `npm run build`
+- **Node.js** with Express.js
+- **MongoDB** with Mongoose ODM
+- **JWT** for authentication
+- **Multer** for file uploads
+- **Morgan** for logging
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Frontend
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- **React.js** with hooks
+- **Redux** for state management
+- **React Bootstrap** for UI components
+- **React Router** for navigation
+- **Axios** for API calls
+- **PayPal** integration
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 📁 Project Structure
 
-### `npm run eject`
+```
+proshop/
+├── backend/
+│   ├── config/
+│   ├── controllers/
+│   ├── data/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── utils/
+│   ├── uploads/
+│   ├── server.js
+│   └── seeder.js
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── actions/
+│   │   ├── components/
+│   │   ├── constants/
+│   │   ├── reducers/
+│   │   ├── screens/
+│   │   ├── utils/
+│   │   ├── App.js
+│   │   └── store.js
+│   └── package.json
+└── package.json
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 🚀 Getting Started
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Prerequisites
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Node.js (v14 or higher)
+- MongoDB
+- npm or yarn
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Installation
 
-## Learn More
+1. **Clone the repository**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+   ```bash
+   git clone <repository-url>
+   cd proshop
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. **Install dependencies**
 
-### Code Splitting
+   ```bash
+   # Install backend dependencies
+   npm install
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+   # Install frontend dependencies
+   cd frontend
+   npm install
+   cd ..
+   ```
 
-### Analyzing the Bundle Size
+3. **Environment Setup**
+   Create a `.env` file in the root directory:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+   ```env
+   NODE_ENV=development
+   PORT=5000
+   MONGO_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
+   PAYPAL_CLIENT_ID=your_paypal_client_id
+   ```
 
-### Making a Progressive Web App
+4. **Database Setup**
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+   ```bash
+   # Import sample data
+   npm run data:import
+   ```
 
-### Advanced Configuration
+5. **Start the application**
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+   ```bash
+   # Development mode (runs both frontend and backend)
+   npm run dev
 
-### Deployment
+   # Or run separately:
+   # Backend only
+   npm run server
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+   # Frontend only
+   npm run client
+   ```
 
-### `npm run build` fails to minify
+## 📱 Available Routes
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### Customer Routes
+
+- `/` - Home page
+- `/login` - User login
+- `/register` - User registration
+- `/profile` - User profile
+- `/product/:id` - Product details
+- `/cart/:id?` - Shopping cart
+- `/shipping` - Shipping information
+- `/payment` - Payment method
+- `/placeorder` - Place order
+- `/order/:id` - Order details
+
+### Admin Routes
+
+- `/admin/productlist` - Product management
+- `/admin/product/:id/edit` - Edit product
+- `/admin/userlist` - User management
+- `/admin/user/:id/edit` - Edit user
+- `/admin/orderlist` - Order management
+
+## 🔧 API Endpoints
+
+### Products
+
+- `GET /api/products` - Get all products
+- `GET /api/products/:id` - Get product by ID
+- `POST /api/products` - Create product (Admin)
+- `PUT /api/products/:id` - Update product (Admin)
+- `DELETE /api/products/:id` - Delete product (Admin)
+
+### Users
+
+- `POST /api/users/login` - User login
+- `POST /api/users/register` - User registration
+- `GET /api/users/profile` - Get user profile
+- `PUT /api/users/profile` - Update user profile
+- `GET /api/users` - Get all users (Admin)
+- `DELETE /api/users/:id` - Delete user (Admin)
+- `PUT /api/users/:id` - Update user (Admin)
+
+### Orders
+
+- `POST /api/orders` - Create order
+- `GET /api/orders/myorders` - Get user orders
+- `GET /api/orders/:id` - Get order by ID
+- `PUT /api/orders/:id/pay` - Mark order as paid
+- `PUT /api/orders/:id/deliver` - Mark order as delivered (Admin)
+- `GET /api/orders` - Get all orders (Admin)
+
+### Upload
+
+- `POST /api/upload` - Upload image
+
+## 🔐 Authentication
+
+The application uses JWT (JSON Web Tokens) for authentication. Admin routes require both authentication and admin privileges.
+
+### Admin Access
+
+To create an admin user, you can either:
+
+1. Modify the user directly in the database
+2. Use the seeder script to create admin users
+3. Register normally and then update the user's `isAdmin` field to `true`
+
+## 📊 Database Models
+
+### User Model
+
+```javascript
+{
+  name: String,
+  email: String,
+  password: String,
+  isAdmin: Boolean,
+  // ... other fields
+}
+```
+
+### Product Model
+
+```javascript
+{
+  name: String,
+  price: Number,
+  description: String,
+  image: String,
+  brand: String,
+  category: String,
+  countInStock: Number,
+  colors: Array,
+  sizes: Array,
+  sale: Object,
+  // ... other fields
+}
+```
+
+### Order Model
+
+```javascript
+{
+  user: ObjectId,
+  orderItems: Array,
+  shippingAddress: Object,
+  paymentMethod: String,
+  totalPrice: Number,
+  isPaid: Boolean,
+  isDelivered: Boolean,
+  // ... other fields
+}
+```
+
+## 🎨 Styling
+
+The application uses:
+
+- **React Bootstrap** for UI components
+- **Custom CSS** for styling
+- **Responsive design** for mobile compatibility
+
+## 🔧 Development
+
+### Available Scripts
+
+- `npm run dev` - Start development server (frontend + backend)
+- `npm run server` - Start backend server only
+- `npm run client` - Start frontend server only
+- `npm run data:import` - Import sample data
+- `npm run data:destroy` - Clear database
+
+### Code Structure
+
+- **Actions**: Redux actions for API calls
+- **Reducers**: Redux reducers for state management
+- **Components**: Reusable UI components
+- **Screens**: Page-level components
+- **Constants**: Redux action types
+
+## 🚀 Deployment
+
+### Backend Deployment
+
+1. Set `NODE_ENV=production`
+2. Configure MongoDB connection
+3. Set up environment variables
+4. Deploy to your preferred platform (Heroku, Vercel, etc.)
+
+### Frontend Deployment
+
+1. Run `npm run build`
+2. Deploy the `build` folder to your hosting platform
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## 📝 License
+
+This project is licensed under the MIT License.
+
+## 🆘 Support
+
+For support and questions:
+
+- Check the documentation
+- Review existing issues
+- Create a new issue with detailed information
+
+## 🔄 Updates
+
+### Recent Changes
+
+- Added comprehensive order management
+- Implemented admin functionality
+- Added image upload capability
+- Enhanced user management
+- Improved error handling
+- Added PayPal integration
+
+### Future Enhancements
+
+- Real-time notifications
+- Advanced search and filtering
+- Product reviews and ratings
+- Email notifications
+- Advanced analytics
+- Mobile app development
