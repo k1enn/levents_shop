@@ -1,8 +1,8 @@
-# 🛒 E-Commerce MERN App
+# E-Commerce MERN App
 
 A full-stack e-commerce application built with MongoDB, Express.js, React.js, and Node.js featuring comprehensive admin functionality and order management.
 
-## ✨ Features
+## **Features**
 
 **Customer Features**
 - Product browsing with search & filtering
@@ -17,23 +17,22 @@ A full-stack e-commerce application built with MongoDB, Express.js, React.js, an
 - User management
 - Image upload & inventory tracking
 
-## 🛠️ Tech Stack
+## **Tech Stack**
 
 **Backend:** Node.js, Express.js, MongoDB, Mongoose, JWT, Multer  
 **Frontend:** React.js, Redux, React Bootstrap, React Router, Axios
 
-## 🚀 Quick Start
-
-### Prerequisites
-- Node.js (v14+)
-- MongoDB
-- npm/yarn
+### **Images**
+User views: 
+<img src="https://github.com/k1enn/levents_shop/blob/master/frontend/public/images/user_view.png?raw=true">
+Admin view: 
+<img src="https://github.com/k1enn/levents_shop/blob/master/frontend/public/images/admin_view.png?raw=true">
 
 ### Installation
 
 1. **Clone & Install**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/k1enn/levents_shop.git
    cd proshop
    npm install
    cd frontend && npm install && cd ..
@@ -42,11 +41,15 @@ A full-stack e-commerce application built with MongoDB, Express.js, React.js, an
 2. **Environment Setup**
    Create `.env` file in root:
    ```env
-   NODE_ENV=development
+   MONGO_URI=YOUR_MONGO_URI
    PORT=5000
-   MONGO_URI=your_mongodb_connection_string
-   JWT_SECRET=your_jwt_secret
-   PAYPAL_CLIENT_ID=your_paypal_client_id
+   JWT_SECRET=abc123
+   NODE_ENV=development
+   MOMO_ACCESS_KEY=F8BBA842ECF85
+   MOMO_SECRET_KEY=K951B6PE1waDMi640xX08PD3vg6EkVlz
+   MOMO_PARTNER_CODE=MOMO
+   MOMO_REDIRECT_URL=http://localhost:3000/order-success
+   MOMO_IPN_URL=http://localhost:5000/api/payment/momo/ipn
    ```
 
 3. **Database Setup**
@@ -59,7 +62,7 @@ A full-stack e-commerce application built with MongoDB, Express.js, React.js, an
    npm run dev  # Runs both frontend & backend
    ```
 
-## 📁 Project Structure
+## **Project Structure**
 
 ```
 ├── backend/          # Express.js API
@@ -121,37 +124,3 @@ npm run client       # Frontend only
 npm run data:import  # Import sample data
 npm run data:destroy # Clear database
 ```
-
-## 🚀 Deployment
-
-**Backend:**
-1. Set `NODE_ENV=production`
-2. Configure MongoDB connection
-3. Deploy to Heroku/Vercel/etc.
-
-**Frontend:**
-1. Run `npm run build`
-2. Deploy build folder to hosting platform
-
-## 📊 Key Models
-
-**User:** `{ name, email, password, isAdmin }`  
-**Product:** `{ name, price, description, image, category, countInStock, colors, sizes }`  
-**Order:** `{ user, orderItems, shippingAddress, paymentMethod, totalPrice, isPaid, isDelivered }`
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License.
-
----
-
-**Live Demo:** [Add your demo link here]  
-**Documentation:** [Add documentation link here]
