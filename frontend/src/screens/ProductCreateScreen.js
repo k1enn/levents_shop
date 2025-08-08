@@ -43,7 +43,6 @@ const ProductCreateScreen = ({ history }) => {
 
   useEffect(() => {
     if (successCreate) {
-      // Show success message briefly before redirecting
       setTimeout(() => {
         dispatch({ type: PRODUCT_CREATE_RESET });
         setIsSubmitting(false);

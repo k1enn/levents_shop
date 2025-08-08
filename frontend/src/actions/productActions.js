@@ -86,8 +86,12 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
       },
     };
 
-    await axios.delete(`/api/products/${id}`, config);
-
+    const orderId = await axios.get(`/api/orders/${id}`);
+    if (orderId !== id) {
+      await axios.delete(`/api/products/${id}`, config);
+    } else {
+      throw new Error("Cant delete");
+    }
     dispatch({
       type: PRODUCT_DELETE_SUCCESS,
     });

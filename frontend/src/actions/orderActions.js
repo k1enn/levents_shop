@@ -50,6 +50,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
       payload: data,
     });
     localStorage.removeItem("cartItems");
+    localStorage.setItem("temp", data);
 
     // Return the created order data for MoMo payment processing
     return data;

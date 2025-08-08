@@ -222,10 +222,11 @@ const updateProduct = asyncHandler(async (req, res) => {
 });
 
 // @desc    Delete a product with cascade delete
-// @route   DELETE /api/products/:id
+// @route   DELETE /api/products/:id?force=true
 // @access  Private/Admin
 const deleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  const { force } = req.query;
 
   // Validate ObjectId format
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -242,19 +243,46 @@ const deleteProduct = asyncHandler(async (req, res) => {
     });
 
     if (ordersWithProduct.length > 0) {
-      // If product exists in orders, we should not delete it completely
-      // Instead, mark it as inactive to preserve order history
-      product.isActive = false;
-      await product.save();
-      res.json({
-        message: "Sản phẩm đã được vô hiệu hóa do tồn tại trong đơn hàng",
-        warning:
-          "Product deactivated instead of deleted due to existing orders",
-      });
+      if (force === "true") {
+        // Force delete: remove all orders containing this product and then delete the product
+        const orderIds = ordersWithProduct.map((order) => order._id);
+
+        // Delete all orders containing this product
+        await Order.deleteMany({
+          "orderItems.product": id,
+        });
+
+        // Delete the product
+        await Product.findByIdAndDelete(id);
+
+        res.json({
+          message: "Sản phẩm và các đơn hàng liên quan đã được xóa hoàn toàn",
+          deletedProduct: product.name,
+          deletedOrdersCount: ordersWithProduct.length,
+          deletedOrderIds: orderIds,
+        });
+      } else {
+        // Show warning with order details
+        const orderIds = ordersWithProduct.map((order) => order._id);
+
+        res.status(409).json({
+          warning: true,
+          message: "Không thể xóa sản phẩm vì đang tồn tại trong đơn hàng",
+          productName: product.name,
+          ordersCount: ordersWithProduct.length,
+          orderIds: orderIds,
+          suggestion:
+            "Thêm tham số ?force=true để xóa sản phẩm cùng với các đơn hàng liên quan",
+          forceDeleteUrl: `/api/products/${id}?force=true`,
+        });
+      }
     } else {
       // Safe to delete completely if no orders reference this product
       await Product.findByIdAndDelete(id);
-      res.json({ message: "Sản phẩm đã được xóa hoàn toàn" });
+      res.json({
+        message: "Sản phẩm đã được xóa hoàn toàn",
+        deletedProduct: product.name,
+      });
     }
   } else {
     res.status(404);

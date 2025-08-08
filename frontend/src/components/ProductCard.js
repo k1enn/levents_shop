@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Card, Row, Col } from "react-bootstrap";
 import Rating from "./Rating";
 import { saleUtils } from "../utils/saleUtils";
+import CurrencyFormat from "react-currency-format";
 
 // This component is for displaying products in a list/grid
 const ProductCard = ({ product }) => {
@@ -50,8 +51,14 @@ const ProductCard = ({ product }) => {
             <div className="price-section">
               <div>
                 <span className="h5 fw-bold">
-                  Giá: {saleInfo.salePrice} VND
-                </span>
+                  Giá:{" "}
+                  <CurrencyFormat
+                    value={saleInfo.salePrice}
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    prefix={""}
+                  />
+                  VNDuu                </span>
                 <span
                   className="original-price text-muted"
                   style={{
@@ -66,7 +73,14 @@ const ProductCard = ({ product }) => {
             </div>
           ) : (
             <Card.Text className="h5 fw-bold">
-              Giá: {product.price} VND
+              Giá:
+              <CurrencyFormat
+                value={product.price}
+                displayType={"text"}
+                thousandSeparator={true}
+                prefix={""}
+              />
+              VND
             </Card.Text>
           )}
         </div>
