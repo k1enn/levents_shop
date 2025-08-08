@@ -58,7 +58,8 @@ const ProductCard = ({ product }) => {
                     thousandSeparator={true}
                     prefix={""}
                   />
-                  VNDuu                </span>
+                  VND{" "}
+                </span>
                 <span
                   className="original-price text-muted"
                   style={{
