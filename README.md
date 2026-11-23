@@ -26,49 +26,13 @@ A phone store web app built with React Router 8 (SSR) and run serverless on AWS:
 
 ## Architecture
 
-### Request flow
+![Architecture](docs/architecture/architecture.png)
 
-```mermaid
-flowchart LR
-    U["Browser"] -->|HTTPS| CF["CloudFront"]
-
-    CF -->|"/assets/*, /images/*"| S3[("S3 bucket<br/>build assets + images")]
-    CF -->|"everything else<br/>+ x-origin-secret header"| URL["Lambda Function URL"]
-    URL --> L["Lambda<br/>React Router SSR<br/>(Lambda Web Adapter)"]
-
-    L -->|"config once per cold start"| SSM[("SSM Parameter Store<br/>/phoneshop/*")]
-    L -->|"read / write"| DDB[("DynamoDB<br/>phoneshop table")]
-    L -->|"upload product images"| S3
-    L -->|"invalidate cache"| CF
-    L --> CW["CloudWatch Logs"]
-
-    L -->|"pay redirect"| PAY["MoMo / VNPay"]
-    PAY -->|"IPN callback<br/>/api/momo/ipn, /api/vnpay/ipn"| CF
-    L -->|"verify token"| TS["Cloudflare Turnstile"]
-```
+Source: [`docs/architecture/architecture.drawio`](docs/architecture/architecture.drawio), open with draw.io.
 
 - S3 is private. Only this CloudFront distribution can read it (OAC).
 - Lambda rejects any request without the `x-origin-secret` header, so users must go through CloudFront.
 - Hashed files in `/assets/*` are cached forever. Pages use a 0s default TTL and are invalidated when admin changes data.
-
-### Deploy flow
-
-```mermaid
-flowchart LR
-    DEV["Developer"] -->|"run workflow up / down"| GH["GitHub Actions"]
-    DEV -.->|"or locally: make up"| MK
-
-    GH -->|"OIDC"| ROLE["IAM role<br/>phoneshop-deploy"]
-    ROLE --> MK["make up"]
-
-    MK --> B["npm ci + build<br/>stage-lambda.sh"]
-    B --> TF["terraform apply<br/>infra/app"]
-    TF <-->|"state + lock"| ST[("S3<br/>phoneshop-tfstate-*")]
-
-    TF --> R["CloudFront, Lambda, DynamoDB,<br/>S3 bucket, SSM params, IAM"]
-    TF -->|"upload"| A["build assets + seed images to S3"]
-    TF -->|"seed.mjs"| SEED["products, coupons, admin user"]
-```
 
 `infra/bootstrap` is applied once by hand. It creates the state bucket, the GitHub OIDC deploy role and a budget alert.
 
