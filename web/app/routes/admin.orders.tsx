@@ -77,7 +77,7 @@ export default function AdminOrders({ loaderData: { list }, actionData }: Route.
   const [sp] = useSearchParams();
   return (
     <div className="card flex flex-col gap-3">
-      <h1 className="text-xl font-bold">Đơn hàng</h1>
+      <h1>Đơn hàng</h1>
       <nav className="flex flex-wrap gap-2 text-sm">
         <Link to="?" className={!sp.get("status") ? "font-bold" : ""}>Tất cả</Link>
         {STATUSES.map((s) => (

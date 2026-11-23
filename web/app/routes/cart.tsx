@@ -41,8 +41,8 @@ function Line({ l }: { l: Route.ComponentProps["loaderData"]["lines"][number] })
   const set = (qty: number) => f.submit({ intent: "set", sku: l.sku, qty }, { method: "post" });
   const max = Math.min(MAX_QTY, l.stock);
   return (
-    <div className="flex items-center gap-3 border-t py-3">
-      <img src={`/images/${l.image}`} alt="" className="h-16 w-16 object-contain" />
+    <div className="flex items-center gap-3 border-t border-black/10 py-3">
+      <img src={`/images/${l.image}`} alt="" className="h-20 w-20 bg-muted object-contain" />
       <div className="flex-1">
         <Link to={`/phones/${l.slug}?sku=${l.sku}`} className="font-medium">{l.name}</Link>
         <p className="text-sm text-gray-500">{l.color} · {l.storage} GB</p>
@@ -54,7 +54,7 @@ function Line({ l }: { l: Route.ComponentProps["loaderData"]["lines"][number] })
         ))}
       </select>
       <span className="w-28 text-right">{formatVnd(l.price * l.qty)}</span>
-      <button onClick={() => set(0)} className="text-sm text-red-600">Xóa</button>
+      <button onClick={() => set(0)} className="text-sm underline">Xóa</button>
     </div>
   );
 }
@@ -62,17 +62,21 @@ function Line({ l }: { l: Route.ComponentProps["loaderData"]["lines"][number] })
 export default function Cart({ loaderData: { lines, total } }: Route.ComponentProps) {
   if (!lines.length)
     return (
-      <div className="card">
+      <div className="flex flex-col items-center gap-4 py-12">
+        <h1>Giỏ hàng</h1>
         <p>Giỏ hàng trống.</p>
-        <Link to="/phones" className="btn mt-2">Mua sắm</Link>
+        <Link to="/phones" className="btn">Mua sắm</Link>
       </div>
     );
   return (
-    <div className="card">
-      <h1 className="text-xl font-bold">Giỏ hàng</h1>
-      {lines.map((l) => <Line key={l.sku} l={l} />)}
-      <div className="flex items-center justify-between border-t pt-3">
-        <b>Tạm tính: {formatVnd(total)}</b>
+    <div className="grid gap-6 md:grid-cols-[2fr_1fr]">
+      <div>
+        <h1>Giỏ hàng</h1>
+        {lines.map((l) => <Line key={l.sku} l={l} />)}
+      </div>
+      <div className="card flex flex-col gap-3 self-start border border-black/10 md:mt-20">
+        <h2 className="py-0">Tổng cộng</h2>
+        <p className="flex justify-between border-t border-black/10 pt-3"><span>Tạm tính</span><b className="font-extrabold text-black">{formatVnd(total)}</b></p>
         <Link to="/checkout" className="btn">Đặt hàng</Link>
       </div>
     </div>

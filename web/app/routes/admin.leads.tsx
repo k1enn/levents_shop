@@ -25,7 +25,7 @@ export async function action({ request }: Route.ActionArgs) {
 export default function AdminLeads({ loaderData: { list } }: Route.ComponentProps) {
   return (
     <div className="card">
-      <h1 className="mb-2 text-xl font-bold">Yêu cầu tư vấn</h1>
+      <h1 className="mb-2">Yêu cầu tư vấn</h1>
       <table className="table">
         <tbody>
           {list.map((l) => (

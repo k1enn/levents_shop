@@ -14,7 +14,7 @@ export default function AdminProducts({ loaderData: { list } }: Route.ComponentP
   return (
     <div className="card">
       <div className="mb-2 flex justify-between">
-        <h1 className="text-xl font-bold">Sản phẩm ({list.length})</h1>
+        <h1>Sản phẩm ({list.length})</h1>
         <Link to="/admin/products/new" className="btn">Thêm</Link>
       </div>
       <table className="table">
@@ -24,7 +24,7 @@ export default function AdminProducts({ loaderData: { list } }: Route.ComponentP
         <tbody>
           {list.map((p) => (
             <tr key={p._id}>
-              <td><Link to={`/admin/products/${p._id}`} className="text-blue-600">{p.name}</Link></td>
+              <td><Link to={`/admin/products/${p._id}`} className="underline">{p.name}</Link></td>
               <td>{p.brand}</td>
               <td>{formatVnd(p.minPrice)}</td>
               <td>{p.variants}</td>

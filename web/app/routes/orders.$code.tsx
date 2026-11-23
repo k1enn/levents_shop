@@ -21,7 +21,7 @@ export default function OrderPage({ loaderData: { order: o } }: Route.ComponentP
   return (
     <div className="grid gap-4 md:grid-cols-2">
       <div className="card flex flex-col gap-2">
-        <h1 className="text-xl font-bold">Đơn {o.code}</h1>
+        <h1>Đơn {o.code}</h1>
         <p>Trạng thái: <b>{STATUS_LABEL[o.status]}</b> · {PAY_LABEL[o.paymentMethod]}</p>
         {o.items.map((i) => (
           <div key={i.sku} className="flex justify-between text-sm">
@@ -33,7 +33,7 @@ export default function OrderPage({ loaderData: { order: o } }: Route.ComponentP
           <p>Tạm tính: {formatVnd(o.totals.items)}</p>
           <p>Phí giao: {formatVnd(o.totals.shipping)}</p>
           {o.totals.discount > 0 && <p>Giảm giá ({o.couponCode}): -{formatVnd(o.totals.discount)}</p>}
-          <p className="text-lg font-bold">Tổng: {formatVnd(o.totals.total)}</p>
+          <p className="text-base font-extrabold text-black">Tổng: {formatVnd(o.totals.total)}</p>
         </div>
         <p className="text-sm text-gray-600">Giao đến: {s.fullName}, {s.phone}, {s.address}, {s.ward}, {s.district}, {s.province}</p>
         {sp.get("payError") && <p className="err">Không tạo được thanh toán, vui lòng thử lại.</p>}
@@ -44,10 +44,10 @@ export default function OrderPage({ loaderData: { order: o } }: Route.ComponentP
         )}
       </div>
       <div className="card">
-        <h2 className="mb-2 font-bold">Hành trình đơn hàng</h2>
-        <ol className="border-l-2 border-red-600 pl-4">
+        <h2 className="mb-2">Hành trình đơn hàng</h2>
+        <ol className="border-l-2 border-black pl-4">
           {o.statusHistory.map((h, i) => (
-            <li key={i} className="relative mb-3 before:absolute before:-left-[1.4rem] before:top-1.5 before:h-3 before:w-3 before:rounded-full before:bg-red-600">
+            <li key={i} className="relative mb-3 before:absolute before:-left-[1.4rem] before:top-1.5 before:h-3 before:w-3 before:rounded-full before:bg-black">
               <b>{STATUS_LABEL[h.status]}</b>
               <span className="block text-sm text-gray-500">{new Date(h.at).toLocaleString("vi-VN")}</span>
             </li>

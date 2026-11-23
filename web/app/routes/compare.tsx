@@ -40,10 +40,10 @@ export default function Compare({ loaderData: { list } }: Route.ComponentProps) 
     localStorage.setItem(COMPARE_KEY, JSON.stringify(next));
     navigate(next.length ? `?slugs=${next.join(",")}` : "/phones");
   };
-  if (!list.length) return <div className="card">Chưa chọn sản phẩm. <Link to="/phones" className="text-blue-600">Chọn điện thoại</Link></div>;
+  if (!list.length) return <div className="card">Chưa chọn sản phẩm. <Link to="/phones" className="underline">Chọn điện thoại</Link></div>;
   return (
     <div className="card overflow-x-auto">
-      <h1 className="mb-2 text-xl font-bold">So sánh</h1>
+      <h1 className="mb-2">So sánh</h1>
       <table className="table min-w-[600px]">
         <thead>
           <tr>
@@ -52,7 +52,7 @@ export default function Compare({ loaderData: { list } }: Route.ComponentProps) 
               <th key={p.slug} className="align-top">
                 <img src={`/images/${p.images[0]}`} alt="" className="h-24 object-contain" />
                 <Link to={`/phones/${p.slug}`} className="block">{p.name}</Link>
-                <button onClick={() => remove(p.slug)} className="text-xs font-normal text-red-600">Bỏ</button>
+                <button onClick={() => remove(p.slug)} className="text-xs font-normal underline">Bỏ</button>
               </th>
             ))}
           </tr>

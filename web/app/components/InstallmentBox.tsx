@@ -14,8 +14,8 @@ export function InstallmentBox({ price, sku, result }: { price: number; sku: str
   const pick = (cur: number | string, val: number | string) => (cur === val ? "btn px-3 py-1" : "btn-ghost px-3 py-1");
 
   return (
-    <Form method="post" className="card flex flex-col gap-2 border border-orange-200">
-      <h2 className="font-bold">Trả góp</h2>
+    <Form method="post" className="card flex flex-col gap-2 border border-black/10">
+      <h2>Trả góp</h2>
       <div className="flex flex-wrap gap-2">
         {(Object.keys(PLANS) as Plan[]).map((p) => (
           <button type="button" key={p} onClick={() => setPlan(p)} className={pick(plan, p)}>Lãi {p === "0%" ? "0%" : "1,5%/tháng"}</button>
@@ -32,7 +32,7 @@ export function InstallmentBox({ price, sku, result }: { price: number; sku: str
         ))}
       </div>
       <p>
-        Tạm tính: <b className="text-red-600">{formatVnd(monthlyPayment(price, down, months, PLANS[plan]))}</b>/tháng
+        Tạm tính: <b className="font-extrabold text-black">{formatVnd(monthlyPayment(price, down, months, PLANS[plan]))}</b>/tháng
         <span className="block text-xs text-gray-500">Chỉ là ước tính, không phải đề nghị tín dụng. Nhân viên sẽ tư vấn chính xác.</span>
       </p>
       <input type="hidden" name="intent" value="installment" />

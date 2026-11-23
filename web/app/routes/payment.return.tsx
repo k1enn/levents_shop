@@ -15,8 +15,9 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function PaymentReturn({ loaderData: { valid, success, code } }: Route.ComponentProps) {
   return (
-    <div className="card mx-auto flex max-w-md flex-col gap-3 text-center">
-      <h1 className="text-xl font-bold">
+    <div className="mx-auto flex max-w-md flex-col items-center gap-3 py-12 text-center">
+      <span className={`flex h-16 w-16 items-center justify-center rounded-full text-3xl text-white ${success ? "bg-[#4bbf73]" : "bg-[#d9534f]"}`} aria-hidden>{success ? "✓" : "✕"}</span>
+      <h1>
         {!valid ? "Liên kết không hợp lệ" : success ? "Thanh toán thành công" : "Thanh toán không thành công"}
       </h1>
       {success && <p>Đơn hàng sẽ được cập nhật trong giây lát.</p>}

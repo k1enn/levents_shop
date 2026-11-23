@@ -30,8 +30,8 @@ export default function Login({ actionData }: Route.ComponentProps) {
 export function AuthForm({ title, error, next, register }: { title: string; error?: string; next: string | null; register?: boolean }) {
   const qs = next ? `?next=${encodeURIComponent(next)}` : "";
   return (
-    <Form method="post" action={`${register ? "/register" : "/login"}${qs}`} className="card mx-auto flex max-w-sm flex-col gap-3">
-      <h1 className="text-xl font-bold">{title}</h1>
+    <Form method="post" action={`${register ? "/register" : "/login"}${qs}`} className="mx-auto flex w-full max-w-[540px] flex-col gap-3 py-4">
+      <h1>{title}</h1>
       {register && <input name="name" required maxLength={80} placeholder="Họ tên" className="input" />}
       <input name="email" type="email" required placeholder="Email" className="input" autoComplete="email" />
       <input name="password" type="password" required minLength={register ? 8 : undefined} placeholder="Mật khẩu" className="input" autoComplete={register ? "new-password" : "current-password"} />
@@ -39,9 +39,9 @@ export function AuthForm({ title, error, next, register }: { title: string; erro
       {error && <p className="err">{error}</p>}
       <button className="btn">{title}</button>
       {register ? (
-        <Link to={`/login${qs}`} className="text-sm text-blue-600">Đã có tài khoản? Đăng nhập</Link>
+        <Link to={`/login${qs}`} className="text-sm underline">Đã có tài khoản? Đăng nhập</Link>
       ) : (
-        <Link to={`/register${qs}`} className="text-sm text-blue-600">Chưa có tài khoản? Đăng ký</Link>
+        <Link to={`/register${qs}`} className="text-sm underline">Chưa có tài khoản? Đăng ký</Link>
       )}
     </Form>
   );

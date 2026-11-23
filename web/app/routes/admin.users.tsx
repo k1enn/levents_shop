@@ -11,7 +11,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function AdminUsers({ loaderData: { list } }: Route.ComponentProps) {
   return (
     <div className="card">
-      <h1 className="mb-2 text-xl font-bold">Người dùng ({list.length})</h1>
+      <h1 className="mb-2">Người dùng ({list.length})</h1>
       <table className="table">
         <tbody>
           {list.map((u) => (

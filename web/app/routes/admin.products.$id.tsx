@@ -97,7 +97,7 @@ export default function EditProduct({ loaderData: { p }, actionData }: Route.Com
   );
   return (
     <Form method="post" encType="multipart/form-data" className="card flex flex-col gap-3">
-      <h1 className="text-xl font-bold">{p ? `Sửa ${p.name}` : "Thêm sản phẩm"}</h1>
+      <h1>{p ? `Sửa ${p.name}` : "Thêm sản phẩm"}</h1>
       <div className="grid gap-2 md:grid-cols-3">
         {field("name", "Tên", p?.name)}
         {field("slug", "Slug (URL)", p?.slug)}
@@ -114,7 +114,7 @@ export default function EditProduct({ loaderData: { p }, actionData }: Route.Com
         <textarea name="description" rows={4} defaultValue={p?.description} className="input" />
       </label>
 
-      <h2 className="font-bold">Phiên bản</h2>
+      <h2>Phiên bản</h2>
       {rows.map((r, i) => (
         <div key={r.key} className="grid grid-cols-6 gap-2">
           <input name="v_sku" defaultValue={r.sku} placeholder="SKU" className="input" aria-label="SKU" />
@@ -129,19 +129,19 @@ export default function EditProduct({ loaderData: { p }, actionData }: Route.Com
         + Phiên bản
       </button>
 
-      <h2 className="font-bold">Ảnh</h2>
+      <h2>Ảnh</h2>
       <div className="flex flex-wrap gap-2">
         {images.map((k) => (
           <div key={k} className="relative">
             <input type="hidden" name="images" value={k} />
             <img src={`/images/${k}`} alt="" className="h-20 w-20 object-contain" />
-            <button type="button" onClick={() => setImages(images.filter((x) => x !== k))} className="absolute right-0 top-0 bg-white px-1 text-red-600" aria-label="Bỏ ảnh">×</button>
+            <button type="button" onClick={() => setImages(images.filter((x) => x !== k))} className="absolute right-0 top-0 bg-black px-1 text-white" aria-label="Bỏ ảnh">×</button>
           </div>
         ))}
       </div>
       <input type="file" name="upload" multiple accept="image/jpeg,image/png,image/webp" />
 
-      <h2 className="font-bold">Khuyến mãi / Flash sale</h2>
+      <h2>Khuyến mãi / Flash sale</h2>
       <div className="grid gap-2 md:grid-cols-5">
         <label className="flex items-center gap-2"><input type="checkbox" name="isOnSale" defaultChecked={p?.sale?.isOnSale} /> Bật</label>
         <select name="saleType" defaultValue={p?.sale?.saleType ?? "percentage"} className="input" aria-label="Kiểu giảm">

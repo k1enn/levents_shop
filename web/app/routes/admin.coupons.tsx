@@ -35,7 +35,7 @@ export async function action({ request }: Route.ActionArgs) {
 export default function AdminCoupons({ loaderData: { list }, actionData }: Route.ComponentProps) {
   return (
     <div className="card flex flex-col gap-3">
-      <h1 className="text-xl font-bold">Mã giảm giá</h1>
+      <h1>Mã giảm giá</h1>
       <Form method="post" className="grid gap-2 md:grid-cols-4">
         <input name="code" required placeholder="MÃ" className="input uppercase" />
         <select name="type" className="input" aria-label="Loại">
@@ -64,7 +64,7 @@ export default function AdminCoupons({ loaderData: { list }, actionData }: Route
                 <Form method="post">
                   <input type="hidden" name="intent" value="toggle" />
                   <input type="hidden" name="code" value={c.code} />
-                  <button className="text-blue-600">{c.active ? "Tắt" : "Bật"}</button>
+                  <button className="underline">{c.active ? "Tắt" : "Bật"}</button>
                 </Form>
               </td>
             </tr>

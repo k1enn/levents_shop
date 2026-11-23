@@ -26,7 +26,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Warranty({ loaderData: { result } }: Route.ComponentProps) {
   return (
     <div className="card mx-auto flex max-w-md flex-col gap-3">
-      <h1 className="text-xl font-bold">Tra cứu bảo hành</h1>
+      <h1>Tra cứu bảo hành</h1>
       <Form method="get" className="flex gap-2">
         <input name="imei" required inputMode="numeric" maxLength={15} placeholder="Nhập IMEI (bấm *#06#)" className="input" />
         <button className="btn">Tra cứu</button>
@@ -37,7 +37,7 @@ export default function Warranty({ loaderData: { result } }: Route.ComponentProp
           <p className="font-bold">{result.found.model}</p>
           <p>Ngày mua: {formatDate(result.found.bought)}</p>
           <p>Bảo hành đến: {formatDate(result.found.end)}</p>
-          <p className={result.found.active ? "text-green-700" : "text-red-600"}>{result.found.active ? "Còn bảo hành" : "Hết bảo hành"}</p>
+          <p className={result.found.active ? "text-green-700" : "err"}>{result.found.active ? "Còn bảo hành" : "Hết bảo hành"}</p>
         </div>
       )}
     </div>

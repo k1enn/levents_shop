@@ -16,13 +16,13 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Orders({ loaderData: { list } }: Route.ComponentProps) {
   return (
     <div className="card">
-      <h1 className="mb-2 text-xl font-bold">Đơn hàng của tôi</h1>
+      <h1 className="mb-2">Đơn hàng của tôi</h1>
       {!list.length && <p>Chưa có đơn hàng.</p>}
       <table className="table">
         <tbody>
           {list.map((o) => (
             <tr key={o.code}>
-              <td><Link to={`/orders/${o.code}`} className="text-blue-600">{o.code}</Link></td>
+              <td><Link to={`/orders/${o.code}`} className="underline">{o.code}</Link></td>
               <td>{formatDate(o.createdAt)}</td>
               <td>{STATUS_LABEL[o.status]}</td>
               <td className="text-right">{formatVnd(o.totals.total)}</td>

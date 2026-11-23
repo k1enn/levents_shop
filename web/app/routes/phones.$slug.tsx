@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { data, Form, Link, useFetcher, useSearchParams } from "react-router";
 import type { Route } from "./+types/phones.$slug";
 import { getProductBySlug } from "~/lib/products.server";
@@ -96,6 +97,24 @@ export async function action({ request, params }: Route.ActionArgs) {
 }
 
 
+function Gallery({ images, alt }: { images: string[]; alt: string }) {
+  const [cur, setCur] = useState(images[0]);
+  return (
+    <div className="flex flex-col gap-2">
+      <img src={`/images/${cur}`} alt={alt} className="aspect-square w-full bg-muted object-contain" />
+      {images.length > 1 && (
+        <div className="flex gap-2 overflow-x-auto">
+          {images.map((i) => (
+            <button key={i} type="button" onClick={() => setCur(i)} className={`h-16 w-16 shrink-0 border ${i === cur ? "border-black" : "border-transparent"}`}>
+              <img src={`/images/${i}`} alt="" className="h-full w-full bg-muted object-contain" />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 const gb = (n: number) => (n >= 1024 ? `${n / 1024} TB` : `${n} GB`);
 
 export default function PhoneDetail({ loaderData: { product: p, reviews, rpage }, actionData }: Route.ComponentProps) {
@@ -114,12 +133,12 @@ export default function PhoneDetail({ loaderData: { product: p, reviews, rpage }
   return (
     <div className="flex flex-col gap-6">
       <div className="grid gap-6 md:grid-cols-2">
-        <img src={`/images/${v.image ?? p.images[0]}`} alt={p.name} className="card aspect-square w-full object-contain" />
+        <Gallery key={v.sku} images={[...new Set([v.image ?? p.images[0], ...p.images])]} alt={p.name} />
         <div className="flex flex-col gap-4">
-          <h1 className="text-2xl font-bold">{p.name} {gb(v.storage)} {v.color}</h1>
+          <h1 className="py-0">{p.name} {gb(v.storage)} {v.color}</h1>
           <Price price={v.price} sale={p.sale} className="text-2xl" />
           <div>
-            <p className="mb-1 text-sm text-gray-600">Dung lượng</p>
+            <h4 className="mb-2 text-xs">Dung lượng</h4>
             <div className="flex flex-wrap gap-2">
               {storages.map((st) => (
                 <Link key={st} to={`?sku=${skuFor(v.color, st)}`} replace preventScrollReset className={st === v.storage ? "btn" : "btn-ghost"}>
@@ -129,7 +148,7 @@ export default function PhoneDetail({ loaderData: { product: p, reviews, rpage }
             </div>
           </div>
           <div>
-            <p className="mb-1 text-sm text-gray-600">Màu sắc</p>
+            <h4 className="mb-2 text-xs">Màu sắc</h4>
             <div className="flex flex-wrap gap-2">
               {colors.map((c) => (
                 <Link key={c} to={`?sku=${skuFor(c, v.storage)}`} replace preventScrollReset className={c === v.color ? "btn" : "btn-ghost"}>
@@ -138,7 +157,7 @@ export default function PhoneDetail({ loaderData: { product: p, reviews, rpage }
               ))}
             </div>
           </div>
-          <p className={v.stock > 0 ? "text-green-700" : "text-red-600"}>{v.stock > 0 ? `Còn ${v.stock} máy` : "Hết hàng"}</p>
+          <p className={v.stock > 0 ? "text-green-700" : "err"}>{v.stock > 0 ? `Còn ${v.stock} máy` : "Hết hàng"}</p>
           <cart.Form method="post" action="/cart" className="flex gap-2">
             <input type="hidden" name="intent" value="add" />
             <input type="hidden" name="sku" value={v.sku} />
@@ -156,8 +175,8 @@ export default function PhoneDetail({ loaderData: { product: p, reviews, rpage }
         </div>
       </div>
 
-      <section className="card">
-        <h2 className="mb-2 text-lg font-bold">Thông số kỹ thuật</h2>
+      <section className="card border-t border-black/10 px-0">
+        <h2 className="mb-2">Thông số kỹ thuật</h2>
         <table className="table">
           <tbody>
             {[["Màn hình", s.screen], ["Chip", s.chip], ["RAM", `${s.ram} GB`], ["Pin", `${s.battery} mAh`], ["Hệ điều hành", s.os], ["Camera", s.camera]].map(([k, val]) => (
@@ -171,14 +190,14 @@ export default function PhoneDetail({ loaderData: { product: p, reviews, rpage }
         <p className="mt-4 whitespace-pre-line">{p.description}</p>
       </section>
 
-      <section className="card flex flex-col gap-3">
-        <h2 className="text-lg font-bold">
+      <section className="card flex flex-col gap-3 border-t border-black/10 px-0">
+        <h2>
           Đánh giá {p.numReviews > 0 && `· ★ ${p.rating} (${p.numReviews})`}
         </h2>
         {reviews.map((r) => (
           <div key={r._id} className="border-t pt-2">
             <p className="font-medium">
-              {r.name} <span className="text-yellow-500">{"★".repeat(r.rating)}</span>
+              {r.name} <span className="text-[#f0ad4e]">{"★".repeat(r.rating)}</span>
               <span className="ml-2 text-xs text-gray-400">{formatDate(r.createdAt)}</span>
             </p>
             <p className="whitespace-pre-line">{r.comment}</p>

@@ -7,8 +7,8 @@ export const loader = async ({ request }: Route.LoaderArgs) => ({ user: await re
 
 export default function Profile({ loaderData: { user } }: Route.ComponentProps) {
   return (
-    <div className="card mx-auto flex max-w-sm flex-col gap-2">
-      <h1 className="text-xl font-bold">{user.name}</h1>
+    <div className="mx-auto flex w-full max-w-[540px] flex-col gap-2 py-4">
+      <h1>{user.name}</h1>
       <p>{user.email}</p>
       <p className="text-sm text-gray-500">Thành viên từ {formatDate(user.createdAt)}</p>
       <Link to="/orders" className="btn">Đơn hàng của tôi</Link>

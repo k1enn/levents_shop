@@ -5,8 +5,8 @@ export function Price({ price, sale, className = "" }: { price: number; sale?: S
   const now = salePrice(price, sale);
   return (
     <span className={className}>
-      <span className="font-bold text-red-600">{formatVnd(now)}</span>
-      {now < price && <span className="ml-2 text-sm text-gray-400 line-through">{formatVnd(price)}</span>}
+      <span className="font-extrabold text-black">{formatVnd(now)}</span>
+      {now < price && <span className="ml-2 text-[0.85em] text-gray-500 line-through">{formatVnd(price)}</span>}
     </span>
   );
 }

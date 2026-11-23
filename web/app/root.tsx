@@ -16,7 +16,7 @@ export const middleware: Route.MiddlewareFunction[] = [
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-  { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" },
+  { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" },
 ];
 
 // No root loader on purpose: catalog pages are edge cached, so per user data comes from /me on the client.
@@ -29,9 +29,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="flex min-h-screen flex-col">
+      <body className="flex min-h-screen flex-col overflow-x-hidden">
         <Header />
-        <main className="mx-auto w-full max-w-6xl flex-1 p-4">{children}</main>
+        <main className="wrap min-h-[80vh] flex-1 py-4">{children}</main>
         <Footer />
         <ScrollRestoration />
         <Scripts />

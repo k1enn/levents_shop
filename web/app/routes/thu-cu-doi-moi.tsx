@@ -33,7 +33,7 @@ export default function TradeIn({ actionData }: Route.ComponentProps) {
   const base = TRADE_IN_PRICES.find((p) => p.model === model)!.basePrice;
   return (
     <Form method="post" className="card mx-auto flex max-w-md flex-col gap-3">
-      <h1 className="text-xl font-bold">Thu cũ đổi mới</h1>
+      <h1>Thu cũ đổi mới</h1>
       <select name="model" value={model} onChange={(e) => setModel(e.target.value)} className="input" aria-label="Máy cũ">
         {MODELS.map((m) => <option key={m}>{m}</option>)}
       </select>
@@ -41,7 +41,7 @@ export default function TradeIn({ actionData }: Route.ComponentProps) {
         {Object.keys(CONDITIONS).map((c) => <option key={c}>{c}</option>)}
       </select>
       <p>
-        Giá thu dự kiến: <b className="text-red-600">{formatVnd(tradeInQuote(base, CONDITIONS[condition]))}</b>
+        Giá thu dự kiến: <b className="font-extrabold text-black">{formatVnd(tradeInQuote(base, CONDITIONS[condition]))}</b>
         <span className="block text-xs text-gray-500">Tạm tính, giá chốt sau khi kiểm tra máy tại cửa hàng.</span>
       </p>
       <input name="fullName" required maxLength={80} placeholder="Họ tên" className="input" />

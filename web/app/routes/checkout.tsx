@@ -53,30 +53,34 @@ export async function action({ request }: Route.ActionArgs) {
 
 export default function Checkout({ loaderData: { user, lines, items }, actionData }: Route.ComponentProps) {
   return (
+    <>
+    <ol className="mb-4 flex justify-center gap-6 text-xs font-semibold uppercase text-ink">
+      {["Đăng nhập", "Giao hàng", "Thanh toán", "Đặt hàng"].map((s) => <li key={s}>{s}</li>)}
+    </ol>
     <Form method="post" className="grid gap-4 md:grid-cols-2">
       <div className="card flex flex-col gap-2">
-        <h1 className="text-xl font-bold">Thông tin giao hàng</h1>
+        <h1>Thông tin giao hàng</h1>
         <input name="fullName" required maxLength={80} defaultValue={user.name} placeholder="Họ tên" className="input" />
         <input name="phone" required inputMode="tel" placeholder="Số điện thoại" className="input" />
         {ADDRESS.map(([k, label]) => (
           <input key={k} name={k} required maxLength={120} placeholder={label} className="input" />
         ))}
-        <h2 className="mt-2 font-bold">Thanh toán</h2>
+        <h2 className="mt-2">Thanh toán</h2>
         {PAYMENT_METHODS.map((m, i) => (
           <label key={m} className="flex items-center gap-2">
             <input type="radio" name="paymentMethod" value={m} defaultChecked={i === 0} /> {PAY_LABEL[m]}
           </label>
         ))}
       </div>
-      <div className="card flex flex-col gap-2">
-        <h2 className="font-bold">Đơn hàng</h2>
+      <div className="card flex flex-col gap-2 self-start border border-black/10">
+        <h2>Đơn hàng</h2>
         {lines.map((l) => (
           <div key={l.sku} className="flex justify-between text-sm">
             <span>{l.name} {l.color} {l.storage}GB × {l.qty}</span>
             <span>{formatVnd(l.price * l.qty)}</span>
           </div>
         ))}
-        <div className="flex justify-between border-t pt-2"><span>Tạm tính</span><span>{formatVnd(items)}</span></div>
+        <div className="flex justify-between border-t border-black/10 pt-2"><span>Tạm tính</span><span>{formatVnd(items)}</span></div>
         <div className="flex justify-between"><span>Phí giao hàng</span><span>{formatVnd(SHIPPING_FEE)}</span></div>
         <input name="coupon" maxLength={30} placeholder="Mã giảm giá (nếu có)" className="input uppercase" />
         <p className="text-xs text-gray-500">Giảm giá được tính khi đặt hàng.</p>
@@ -84,5 +88,6 @@ export default function Checkout({ loaderData: { user, lines, items }, actionDat
         <button className="btn">Đặt hàng</button>
       </div>
     </Form>
+    </>
   );
 }
