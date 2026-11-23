@@ -1,0 +1,31 @@
+name: down
+on: workflow_dispatch
+permissions:
+  id-token: write
+  contents: read
+concurrency: phoneshop-infra
+jobs:
+  down:
+    runs-on: ubuntu-latest
+    env:
+      TF_VAR_admin_email: ${{ secrets.ADMIN_EMAIL }}
+      TF_VAR_admin_password: ${{ secrets.ADMIN_PASSWORD }}
+      TF_VAR_momo_partner_code: ${{ secrets.MOMO_PARTNER_CODE }}
+      TF_VAR_momo_access_key: ${{ secrets.MOMO_ACCESS_KEY }}
+      TF_VAR_momo_secret_key: ${{ secrets.MOMO_SECRET_KEY }}
+      TF_VAR_vnp_tmn_code: ${{ secrets.VNP_TMN_CODE }}
+      TF_VAR_vnp_hash_secret: ${{ secrets.VNP_HASH_SECRET }}
+      VITE_TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ap-southeast-1
+      - run: make down

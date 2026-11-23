@@ -1,0 +1,5 @@
+.terraform/
+*.tfstate*
+.lambda/
+.lambda.zip
+.env

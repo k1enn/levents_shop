@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phoneshop AWS Architecture</title>
+<style>
+:root{--bg:#f7f7f5;--card:#fff;--fg:#1d1d1b;--mute:#6b6b66;--line:#d6d6d0;--edge:#7b3fe4;--comp:#d4561e;--data:#2e7d32;--ext:#1e63c4;--ops:#8a6d00;--warn:#b3261e}
+@media (prefers-color-scheme:dark){:root{--bg:#141413;--card:#1e1e1c;--fg:#ecebe6;--mute:#a3a29b;--line:#3a3a36;--edge:#a77bff;--comp:#ff7a45;--data:#5cc26a;--ext:#6aa6ff;--ops:#e0c040;--warn:#ff6b60}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,sans-serif}
+main{max-width:1080px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:26px;margin:0 0 4px}h2{font-size:19px;margin:32px 0 10px}
+.sub{color:var(--mute);margin:0 0 20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin:12px 0;overflow-x:auto}
+svg{width:100%;min-width:640px;height:auto;display:block}
+svg text{fill:var(--fg);font:13px system-ui,sans-serif}
+svg .s{fill:var(--mute);font-size:11px}
+svg .box{fill:var(--card);stroke-width:1.6}
+svg .zone{fill:none;stroke:var(--line);stroke-dasharray:6 5}
+svg .ln{stroke:var(--mute);stroke-width:1.5;fill:none;marker-end:url(#a)}
+svg .ln.pay{stroke:var(--ext);stroke-dasharray:5 4}
+svg .ln.ops{stroke:var(--ops);stroke-dasharray:3 4}
+ul{padding-left:20px;margin:6px 0}li{margin:4px 0}
+pre{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px;overflow-x:auto;font-size:13px}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:9px;border:1px solid var(--line);color:var(--mute);margin-left:4px}
+.hi{color:var(--data)}.md{color:var(--ops)}.no{color:var(--warn)}
+a{color:var(--ext)}
+.legend span{margin-right:14px;font-size:13px;color:var(--mute)}
+.legend i{display:inline-block;width:22px;border-top:2px solid;vertical-align:middle;margin-right:5px}
+</style>
+</head>
+<body>
+<main>
+<h1>Phoneshop on AWS</h1>
+<p class="sub">Replaces the Cloudflare Workers plan. Region ap-southeast-1 (Singapore). DB: DynamoDB. IaC: Terraform, disposable app stack: <code>make up</code> creates and seeds everything, <code>make down</code> deletes it. Target cost about 0 USD per month. Research run wf_cb762a0c-17a, 2026-11-23. Migration plan: <code>plans/261123-aws-dynamodb/plan.md</code>.</p>
+
+<div class="card">
+<svg viewBox="0 0 1040 680" role="img" aria-label="Architecture diagram: users and payment gateways reach CloudFront, which serves S3 assets and forwards dynamic requests to Lambda SSR, which talks to DynamoDB. The app stack is disposable; a small bootstrap stack with Terraform state, GitHub OIDC role and budgets is kept.">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor" style="color:var(--mute)"/></marker></defs>
+
+<!-- clients -->
+<rect class="box" x="20" y="70" width="170" height="64" rx="8" style="stroke:var(--ext)"/>
+<text x="105" y="98" text-anchor="middle">Users (Vietnam)</text><text class="s" x="105" y="116" text-anchor="middle">browser, HTTPS</text>
+<rect class="box" x="20" y="160" width="170" height="64" rx="8" style="stroke:var(--ext)"/>
+<text x="105" y="188" text-anchor="middle">MoMo / VNPay</text><text class="s" x="105" y="206" text-anchor="middle">IPN webhook POST</text>
+<rect class="box" x="20" y="550" width="170" height="64" rx="8" style="stroke:var(--ext)"/>
+<text x="105" y="576" text-anchor="middle">GitHub Actions / laptop</text><text class="s" x="105" y="596" text-anchor="middle">make up, make down</text>
+
+<!-- AWS zone -->
+<rect class="zone" x="230" y="10" width="790" height="660" rx="12"/>
+<text class="s" x="246" y="30">AWS account ap-southeast-1, no VPC, no NAT, no custom domain</text>
+
+<!-- app stack -->
+<rect class="zone" x="250" y="42" width="750" height="450" rx="10" style="stroke:var(--edge)"/>
+<text class="s" x="264" y="62">infra/app: disposable, terraform destroy deletes all of this</text>
+
+<rect class="box" x="270" y="76" width="490" height="124" rx="8" style="stroke:var(--edge)"/>
+<text x="515" y="98" text-anchor="middle">CloudFront, xxxx.cloudfront.net, default TLS cert</text>
+<text class="s" x="290" y="122">cache: /assets, /images long TTL</text>
+<text class="s" x="290" y="140">cache: catalog pages, origin Cache-Control</text>
+<text class="s" x="290" y="158">no cache: /cart, /checkout, /admin, IPN</text>
+<text class="s" x="530" y="122">pay as you go, always free tier</text>
+<text class="s" x="530" y="140">adds secret origin header</text>
+<text class="s" x="530" y="158">forwards CloudFront-Viewer-Address</text>
+<text class="s" x="530" y="176">no WAF, no flat rate plan</text>
+
+<rect class="box" x="270" y="250" width="200" height="90" rx="8" style="stroke:var(--data)"/>
+<text x="370" y="274" text-anchor="middle">S3 bucket (private)</text>
+<text class="s" x="370" y="294" text-anchor="middle">/assets build, /images</text>
+<text class="s" x="370" y="312" text-anchor="middle">read via OAC</text>
+<text class="s" x="370" y="330" text-anchor="middle">force_destroy</text>
+
+<rect class="box" x="510" y="250" width="250" height="100" rx="8" style="stroke:var(--comp)"/>
+<text x="635" y="274" text-anchor="middle">Lambda SSR (Node)</text>
+<text class="s" x="635" y="294" text-anchor="middle">React Router + Web Adapter</text>
+<text class="s" x="635" y="312" text-anchor="middle">Function URL NONE, checks header</text>
+<text class="s" x="635" y="330" text-anchor="middle">catalog in memory, 60 s TTL</text>
+
+<rect class="box" x="800" y="240" width="185" height="120" rx="8" style="stroke:var(--data)"/>
+<text x="892" y="264" text-anchor="middle">DynamoDB</text>
+<text class="s" x="892" y="284" text-anchor="middle">1 table, on demand</text>
+<text class="s" x="892" y="302" text-anchor="middle">GSI1 user orders, GSI2 admin</text>
+<text class="s" x="892" y="320" text-anchor="middle">TTL for rate counters</text>
+<text class="s" x="892" y="338" text-anchor="middle">no PITR (disposable)</text>
+
+<rect class="box" x="270" y="400" width="150" height="64" rx="8" style="stroke:var(--ops)"/>
+<text x="345" y="424" text-anchor="middle">SSM params</text><text class="s" x="345" y="442" text-anchor="middle">secrets + APP_URL</text>
+<rect class="box" x="440" y="400" width="150" height="64" rx="8" style="stroke:var(--ops)"/>
+<text x="515" y="424" text-anchor="middle">Log group</text><text class="s" x="515" y="442" text-anchor="middle">7 days, in TF state</text>
+<rect class="box" x="610" y="400" width="375" height="64" rx="8" style="stroke:var(--ops)"/>
+<text x="797" y="424" text-anchor="middle">Seed: terraform_data local-exec</text>
+<text class="s" x="797" y="444" text-anchor="middle">seed.mjs to table, aws_s3_object for seed-images</text>
+
+<!-- bootstrap -->
+<rect class="zone" x="250" y="520" width="750" height="130" rx="10" style="stroke:var(--ops)"/>
+<text class="s" x="264" y="540">infra/bootstrap: applied once, kept</text>
+<rect class="box" x="270" y="556" width="220" height="70" rx="8" style="stroke:var(--ops)"/>
+<text x="380" y="582" text-anchor="middle">TF state bucket</text><text class="s" x="380" y="602" text-anchor="middle">versioned, SSE, use_lockfile</text>
+<rect class="box" x="510" y="556" width="230" height="70" rx="8" style="stroke:var(--ops)"/>
+<text x="625" y="582" text-anchor="middle">GitHub OIDC deploy role</text><text class="s" x="625" y="602" text-anchor="middle">repo + master only</text>
+<rect class="box" x="760" y="556" width="225" height="70" rx="8" style="stroke:var(--ops)"/>
+<text x="872" y="582" text-anchor="middle">AWS Budgets</text><text class="s" x="872" y="602" text-anchor="middle">alert at 1 and 5 USD</text>
+
+<!-- arrows -->
+<path class="ln" d="M190 102H262"/>
+<path class="ln pay" d="M190 180H262"/>
+<path class="ln" d="M370 200V242"/>
+<path class="ln" d="M635 200V242"/>
+<path class="ln" d="M760 300H792"/>
+<path class="ln ops" d="M420 432H470V380H560V358"/>
+<path class="ln ops" d="M600 350V392"/>
+<path class="ln ops" d="M892 400V368"/>
+<path class="ln ops" d="M190 570H215V480H242"/>
+<path class="ln ops" d="M190 595H262"/>
+<text class="s" x="764" y="292">IAM</text>
+</svg>
+<div class="legend"><span><i style="border-color:var(--mute)"></i>request path</span><span><i style="border-color:var(--ext);border-top-style:dashed"></i>payment IPN</span><span><i style="border-color:var(--ops);border-top-style:dotted"></i>config / deploy / seed</span></div>
+</div>
+
+<h2>Up and down</h2>
+<div class="card">
+<pre>make up     # npm run build, terraform apply, seed runs if the table is new
+make down   # terraform destroy, nothing left but infra/bootstrap</pre>
+<ul>
+<li><code>infra/bootstrap</code> is applied once: state bucket, GitHub OIDC role, budgets. Never destroyed.</li>
+<li><code>infra/app</code> holds the whole shop. Every <code>make up</code> from empty gives a seeded shop: phones, 2 coupons, admin user, product images.</li>
+<li>Orders and users made while up are lost on down. That is the point of disposable.</li>
+<li>Each full apply gives a new <code>*.cloudfront.net</code> URL, printed as output. Terraform writes it to SSM <code>/phoneshop/APP_URL</code>, the app reads it at cold start. This breaks the cycle CloudFront needs Lambda, Lambda needs the CloudFront URL.</li>
+<li>CloudFront create and delete take several minutes each <span class="tag md">not verified</span>.</li>
+</ul>
+</div>
+
+<h2>Terraform layout</h2>
+<div class="card">
+<pre>infra/
+  bootstrap/main.tf   state bucket, OIDC provider + role, budgets
+  app/main.tf         backend "s3" { use_lockfile = true }
+  app/data.tf         DynamoDB table, S3 bucket, aws_s3_object seed images
+  app/lambda.tf       archive_file build, Lambda, Function URL, IAM, log group
+  app/cdn.tf          CloudFront, OAC, origin header, cache policies
+  app/config.tf       random_password, SSM params, APP_URL param
+  app/seed.tf         terraform_data local-exec node seed.mjs
+  app/outputs.tf      url, table, bucket
+Makefile</pre>
+<ul>
+<li>Seed: <code>terraform_data</code> with <code>triggers_replace = aws_dynamodb_table.main.arn</code>, so it seeds again only when the table is new. The script is idempotent, rerun is safe.</li>
+<li>Seed images: <code>aws_s3_object</code> with <code>for_each = fileset(...)</code> and <code>etag = filemd5(...)</code>.</li>
+<li>Secrets: <code>random_password</code> for session and origin secret. MoMo and VNPay keys come from <code>TF_VAR_*</code> (local env or GitHub secrets), never from a tfvars file in git.</li>
+<li>State holds those secrets in plain text. The state bucket is private, encrypted, versioned.</li>
+</ul>
+</div>
+
+<h2>Request flow</h2>
+<div class="card"><ul>
+<li>User hits the <code>*.cloudfront.net</code> URL over HTTPS with the default CloudFront cert.</li>
+<li><code>/assets/*</code> and <code>/images/*</code> go to S3 via OAC. Bucket stays private. Long TTL, hashed file names.</li>
+<li>Everything else goes to Lambda SSR. Catalog pages with public <code>Cache-Control</code> get cached at the edge. Cart, checkout, account, admin and IPN routes are never cached.</li>
+<li>CloudFront adds a secret header. The app returns 403 without it, so the Function URL cannot be hit directly.</li>
+<li>MoMo and VNPay call the IPN routes through CloudFront too.</li>
+<li>Lambda reads SSM params at cold start. It talks to DynamoDB with its IAM role: no DB password, no open allowlist.</li>
+<li>Catalog list, search and filters run on all products in Lambda memory (60 s TTL). Cart and checkout read fresh stock with BatchGetItem.</li>
+<li>Rate limit: counter items in DynamoDB per name + IP + minute, deleted by TTL. Replaces the Workers limiter.</li>
+</ul></div>
+
+<h2>Decisions</h2>
+<div class="card"><ul>
+<li><b>Compute: Lambda, no VPC, classic Function URL.</b> <span class="tag hi">high</span> Lambda Web Functions (Oct 2026) run the Node server as is, but bill memory for the whole life of each environment, idle time included. 3rd party tests show about 2.65x cost for sporadic traffic. A demo stack is sporadic, so the classic Function URL with the Lambda Web Adapter wins.</li>
+<li><b>CDN: CloudFront pay as you go, no custom domain.</b> <span class="tag md">your choice</span> The Free flat rate plan is attached per distribution and Route 53 zones break the domain when destroyed, so both do not fit a disposable stack. At demo traffic pay as you go stays in the always free tier <span class="tag md">not verified</span>.</li>
+<li><b>No WAF.</b> Without the flat rate plan a web ACL costs about 5 USD + 1 USD per rule per month <span class="tag md">not verified</span>. The app limiter in DynamoDB does the job.</li>
+<li><b>DB: DynamoDB single table, on demand.</b> <span class="tag md">not verified</span> IAM auth, no password, no connection handling, same region. Search has no regex, so the catalog is filtered in memory. No PITR or deletion protection: the seed is the backup.</li>
+<li><b>Secrets: SSM Parameter Store Standard.</b> <span class="tag md">not verified</span> Free. Secrets Manager is about 0.40 USD per secret per month.</li>
+<li><b>IaC: Terraform, S3 backend with native lock.</b> <span class="tag md">your choice</span> <code>use_lockfile = true</code> (Terraform 1.10+), no DynamoDB lock table.</li>
+<li><b>CI: GitHub Actions with OIDC.</b> <span class="tag md">not verified</span> 2 manual workflows, up and down. No long lived keys. Trust policy scoped to repo and branch via the <code>sub</code> claim.</li>
+</ul></div>
+
+<h2>DynamoDB data model</h2>
+<div class="card"><ul>
+<li><b>Product</b>: PK <code>PRODUCT</code>, SK id. Variants as a map keyed by SKU, so stock drops with 1 conditional update.</li>
+<li><b>User</b>: PK <code>USER</code>, SK id. <b>Email lock</b>: PK <code>EMAIL#&lt;email&gt;</code> keeps email unique.</li>
+<li><b>Order</b>: PK <code>ORDER#&lt;code&gt;</code>. GSI1 <code>USER#&lt;id&gt;</code> + createdAt for my orders. GSI2 <code>ORDER</code> + createdAt for admin.</li>
+<li><b>IMEI lock</b>: PK <code>IMEI#&lt;imei&gt;</code> holds the order code. 1 IMEI in at most 1 order, warranty lookup is 1 GetItem.</li>
+<li><b>Review</b>: PK <code>REVIEW#&lt;productId&gt;</code>, SK userId, so 1 review per user. Product keeps <code>ratingSum</code> + <code>numReviews</code>.</li>
+<li><b>Coupon</b>: PK <code>COUPON</code>, SK code. <b>Lead</b>: PK <code>LEAD</code>, SK createdAt#id.</li>
+<li><b>Rate counter</b>: PK <code>RATE#&lt;name&gt;#&lt;ip&gt;</code>, SK minute, ADD n, <code>ttl</code> now + 120 s.</li>
+<li class="no">Trap: 1 TransactWriteItems cannot touch the same item twice. 2 SKUs of 1 phone in 1 cart must be 1 update. Max 100 items, 2x capacity cost.</li>
+</ul></div>
+
+<h2>Lambda origin: the trap that breaks POST</h2>
+<div class="card"><ul>
+<li class="no">OAC in front of a classic Function URL needs <code>AWS_IAM</code>, and every POST must carry <code>x-amz-content-sha256</code>. Browser form actions and MoMo/VNPay IPN never send it, so they fail with InvalidSignatureException.</li>
+<li>Fix used here: Function URL with AuthType <code>NONE</code>. CloudFront adds a secret custom origin header (<code>random_password</code>, new each apply). The app returns 403 when the header is missing or wrong.</li>
+<li>Web Function option: <code>IamAuth</code>, OAC origin type <code>lambda</code>, origin request policy <code>AllViewerExceptHostHeader</code>. CloudFront signs POST with UNSIGNED PAYLOAD, so forms and IPN work.</li>
+<li>If u use OAC on a Function URL anyway: since Oct 2025 grant both <code>lambda:InvokeFunctionUrl</code> and <code>lambda:InvokeFunction</code> to <code>cloudfront.amazonaws.com</code> with the distribution SourceArn, or u get 403.</li>
+</ul></div>
+
+<h2>Cost estimate per month</h2>
+<div class="card"><ul>
+<li>While down: state bucket only, about 0 USD. First 2 budgets are free <span class="tag md">not verified</span>.</li>
+<li>While up, CloudFront: 0 USD inside the always free tier <span class="tag md">not verified</span></li>
+<li>Lambda: 0 USD inside free tier (1M requests, 400k GB seconds)</li>
+<li>S3: cents for a few MB of assets and images</li>
+<li>DynamoDB on demand: cents at demo traffic, 25 GB storage free <span class="tag md">not verified</span></li>
+<li>SSM Standard, CloudWatch with 7 day retention: about 0 USD</li>
+<li>No domain, no Route 53, no WAF: 0 USD</li>
+</ul></div>
+
+<h2>Cost traps</h2>
+<div class="card"><ul>
+<li class="no">NAT Gateway: about 32 USD/month plus data. Do not put Lambda in a VPC.</li>
+<li class="no">ECS Express Mode / Fargate: always on ALB about 16 USD/month. App Runner: closed to new customers since Apr 30, 2026.</li>
+<li class="no">Public IPv4: every public IPv4 address bills hourly. No EC2, no Elastic IP.</li>
+<li class="no">Orphan log group: if Lambda creates its own log group, it is not in state and survives destroy. Create it in Terraform.</li>
+<li class="no">S3 bucket with objects blocks destroy unless <code>force_destroy = true</code>.</li>
+<li class="no">CloudWatch Logs default retention is forever. Set 7 days.</li>
+<li class="no">Cache miss flood with no WAF: Lambda and DynamoDB bill per request. Cache catalog pages hard, keep the app limiter on auth and checkout. Run <code>make down</code> when not demoing.</li>
+</ul></div>
+
+<h2>Open questions, check before build</h2>
+<div class="card"><ul>
+<li>CloudFront always free tier on this account, and DynamoDB on demand price in ap-southeast-1.</li>
+<li>VNPay sandbox: is the IPN URL set in the merchant portal? If yes, it must be updated after each full apply. MoMo sends <code>ipnUrl</code> per request, so it is fine.</li>
+<li>How long CloudFront create and destroy take in practice.</li>
+</ul></div>
+
+<h2>Code changes vs the Cloudflare plan</h2>
+<div class="card"><ul>
+<li><code>wrangler.jsonc</code>, <code>workers/app.ts</code>, <code>@cloudflare/vite-plugin</code>: replace with the Node server build of React Router.</li>
+<li><code>cloudflare:workers</code> env: replace with 1 <code>env.server.ts</code> that loads SSM params at cold start.</li>
+<li><code>mongodb</code> driver, <code>withDb</code>, <code>withTx</code>: replace with DynamoDB DocumentClient, conditional updates and TransactWriteItems.</li>
+<li>R2 binding <code>IMAGES</code> + <code>images/*</code> route: replace with S3 PutObject. CloudFront serves <code>/images/*</code>.</li>
+<li>Rate limiter binding <code>LIMITER</code>: replace with DynamoDB counters.</li>
+<li>Cache tag purge: replace with CloudFront CreateInvalidation. Keep the public <code>Cache-Control</code> headers.</li>
+<li><code>CF-Connecting-IP</code>: replace with <code>CloudFront-Viewer-Address</code>.</li>
+<li><code>seed.mjs</code>: write to DynamoDB, run by Terraform.</li>
+<li>PBKDF2 low iteration count was a Workers CPU workaround. Raise it.</li>
+</ul></div>
+
+<h2>Sources</h2>
+<div class="card"><ul>
+<li><a href="https://docs.aws.amazon.com/lambda/latest/dg/web-functions.html">Lambda Web Functions docs</a></li>
+<li><a href="https://aws.amazon.com/blogs/compute/exploring-aws-lambda-web-functions-for-building-web-applications/">AWS blog: Web Functions</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-lambda.html">CloudFront OAC for Lambda</a></li>
+<li><a href="https://aws.amazon.com/blogs/networking-and-content-delivery/secure-your-lambda-function-urls-using-amazon-cloudfront-origin-access-control">AWS blog: Function URL + OAC</a></li>
+<li><a href="https://docs.aws.amazon.com/lambda/latest/dg/urls-auth.html">Function URL auth</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/flat-rate-pricing-plan.html">CloudFront flat rate plans</a></li>
+<li><a href="https://aws.amazon.com/cloudfront/pricing/">CloudFront pricing</a></li>
+<li><a href="https://docs.aws.amazon.com/apprunner/latest/dg/apprunner-availability-change.html">App Runner availability change</a></li>
+<li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/express-service-overview.html">ECS Express Mode</a></li>
+<li><a href="https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws">GitHub OIDC in AWS</a></li>
+<li><a href="https://theburningmonk.com/2023/03/the-old-faithful-why-ssm-parameter-store-still-reigns-over-secrets-manager/">SSM vs Secrets Manager</a></li>
+</ul></div>
+</main>
+</body>
+</html>
