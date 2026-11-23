@@ -23,7 +23,6 @@ async function hashPassword(pw, iterations = 600_000) {
 const id = (s) => createHash("sha256").update(s).digest("hex").slice(0, 32);
 const iso = (ms) => new Date(ms).toISOString();
 
-const IMG = "seed/placeholder.svg";
 const day = 86400_000;
 const now = Date.now();
 // [name, brand, ram, chip, screen, battery, os, camera, colors, {storage: price}]
@@ -73,7 +72,7 @@ const products = PHONES.map(([name, brand, ram, chip, screen, battery, os, camer
     name,
     brand,
     description: `${name} chính hãng VN/A, nguyên seal, bảo hành 12 tháng. Chip ${chip}, màn hình ${screen}, pin ${battery} mAh.`,
-    images: [IMG],
+    images: [`seed/phones/${slug}.jpg`],
     specs: { screen, chip, ram, battery, os, camera },
     variants,
     minPrice: Math.min(...variants.map((v) => v.price)),
