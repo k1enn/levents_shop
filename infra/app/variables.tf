@@ -4,6 +4,9 @@ variable "admin_email" {
   type      = string
   sensitive = true
 }
+# Sender for sign up codes and login PINs. Verified in SES by link (see cognito.tf).
+variable "ses_from_email" { type = string }
+
 variable "admin_password" {
   type      = string
   sensitive = true
@@ -30,8 +33,7 @@ variable "vnp_hash_secret" {
   default   = ""
   sensitive = true
 }
-# Default: Cloudflare always pass test secret (pairs with the test site key in Turnstile.tsx).
+# No default: a forgotten real key would leave Turnstile always passing in prod.
 variable "turnstile_secret" {
-  default   = "1x0000000000000000000000000000000AA"
   sensitive = true
 }

@@ -12,12 +12,14 @@ resource "random_password" "origin" {
 # shortcut: secrets sit in plain text in Terraform state; the state bucket is private, encrypted, versioned.
 locals {
   computed = {
-    SESSION_SECRET  = random_password.session.result
-    ORIGIN_SECRET   = random_password.origin.result
-    APP_URL         = "https://${aws_cloudfront_distribution.main.domain_name}"
-    TABLE           = aws_dynamodb_table.main.name
-    BUCKET          = aws_s3_bucket.app.bucket
-    DISTRIBUTION_ID = aws_cloudfront_distribution.main.id
+    SESSION_SECRET        = random_password.session.result
+    ORIGIN_SECRET         = random_password.origin.result
+    APP_URL               = "https://${aws_cloudfront_distribution.main.domain_name}"
+    TABLE                 = aws_dynamodb_table.main.name
+    BUCKET                = aws_s3_bucket.app.bucket
+    DISTRIBUTION_ID       = aws_cloudfront_distribution.main.id
+    COGNITO_CLIENT_ID     = aws_cognito_user_pool_client.web.id
+    COGNITO_CLIENT_SECRET = aws_cognito_user_pool_client.web.client_secret
   }
   secrets = {
     MOMO_PARTNER_CODE = var.momo_partner_code

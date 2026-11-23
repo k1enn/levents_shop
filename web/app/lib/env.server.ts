@@ -1,7 +1,7 @@
 import { GetParametersByPathCommand, SSMClient } from "@aws-sdk/client-ssm";
 
-const KEYS = ["SESSION_SECRET", "ORIGIN_SECRET", "APP_URL", "TABLE", "BUCKET", "DISTRIBUTION_ID", "MOMO_PARTNER_CODE", "MOMO_ACCESS_KEY", "MOMO_SECRET_KEY", "VNP_TMN_CODE", "VNP_HASH_SECRET", "TURNSTILE_SECRET"] as const;
-const REQUIRED = ["SESSION_SECRET", "APP_URL", "TABLE"] as const;
+const KEYS = ["SESSION_SECRET", "ORIGIN_SECRET", "APP_URL", "TABLE", "BUCKET", "DISTRIBUTION_ID", "MOMO_PARTNER_CODE", "MOMO_ACCESS_KEY", "MOMO_SECRET_KEY", "VNP_TMN_CODE", "VNP_HASH_SECRET", "COGNITO_CLIENT_ID", "COGNITO_CLIENT_SECRET", "TURNSTILE_SECRET"] as const;
+const REQUIRED = ["SESSION_SECRET", "APP_URL", "TABLE", "COGNITO_CLIENT_ID", "COGNITO_CLIENT_SECRET", "TURNSTILE_SECRET"] as const;
 
 // Lambda: SSM params under SSM_PREFIX, once per cold start. Local: .env (never in git).
 async function load() {

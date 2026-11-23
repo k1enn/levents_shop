@@ -3,3 +3,9 @@ output "function_url" { value = aws_lambda_function_url.app.function_url }
 output "table_name" { value = aws_dynamodb_table.main.name }
 output "bucket" { value = aws_s3_bucket.app.bucket }
 output "distribution_id" { value = aws_cloudfront_distribution.main.id }
+output "user_pool_id" { value = aws_cognito_user_pool.main.id }
+output "cognito_client_id" { value = aws_cognito_user_pool_client.web.id }
+output "cognito_client_secret" {
+  value     = aws_cognito_user_pool_client.web.client_secret
+  sensitive = true
+}

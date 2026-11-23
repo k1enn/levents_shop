@@ -1,23 +1,16 @@
-// Seed the DynamoDB table: products, 2 coupons, 1 admin. Seed images are uploaded by Terraform.
+// Seed the DynamoDB table: products, 2 coupons, 1 admin (Cognito user + DynamoDB profile). Seed images are uploaded by Terraform.
 // Local:     node --env-file=.env scripts/seed.mjs
-// Terraform: infra/app/seed.tf runs it with TABLE, AWS_REGION, ADMIN_EMAIL, ADMIN_PASSWORD.
-// Idempotent: ids come from a hash (slug, email), so a rerun overwrites instead of duplicating.
+// Terraform: infra/app/seed.tf runs it with TABLE, USER_POOL_ID, AWS_REGION, ADMIN_EMAIL, ADMIN_PASSWORD.
+// Idempotent: ids come from a hash (slug) or the Cognito sub, so a rerun overwrites instead of duplicating.
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { BatchWriteCommand, DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
-import { createHash, webcrypto as crypto } from "node:crypto";
+import { AdminCreateUserCommand, AdminGetUserCommand, AdminSetUserPasswordCommand, CognitoIdentityProviderClient } from "@aws-sdk/client-cognito-identity-provider";
+import { createHash } from "node:crypto";
 
-const { TABLE, ADMIN_EMAIL, ADMIN_PASSWORD } = process.env;
-if (!TABLE?.startsWith("phoneshop") || !ADMIN_EMAIL || !ADMIN_PASSWORD || ADMIN_PASSWORD.length < 8) {
-  console.error("Need TABLE (phoneshop*), ADMIN_EMAIL, ADMIN_PASSWORD (8+ chars)");
+const { TABLE, USER_POOL_ID, ADMIN_EMAIL, ADMIN_PASSWORD } = process.env;
+if (!TABLE?.startsWith("phoneshop") || !USER_POOL_ID || !ADMIN_EMAIL || !ADMIN_PASSWORD || ADMIN_PASSWORD.length < 8) {
+  console.error("Need TABLE (phoneshop*), USER_POOL_ID, ADMIN_EMAIL, ADMIN_PASSWORD (8+ chars)");
   process.exit(1);
-}
-
-// Must match app/lib/password.server.ts: pbkdf2$<iterations>$<saltB64>$<hashB64>
-async function hashPassword(pw, iterations = 600_000) {
-  const salt = crypto.getRandomValues(new Uint8Array(16));
-  const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveBits"]);
-  const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations }, key, 256);
-  return `pbkdf2$${iterations}$${Buffer.from(salt).toString("base64")}$${Buffer.from(bits).toString("base64")}`;
 }
 
 const id = (s) => createHash("sha256").update(s).digest("hex").slice(0, 32);
@@ -86,7 +79,16 @@ const products = PHONES.map(([name, brand, ram, chip, screen, battery, os, camer
 
 
 const email = ADMIN_EMAIL.toLowerCase();
-const adminId = id(email);
+// Admin in Cognito: verified email (gets the login PIN), permanent password, no invite email.
+const idp = new CognitoIdentityProviderClient({});
+const Username = email;
+try {
+  await idp.send(new AdminCreateUserCommand({ UserPoolId: USER_POOL_ID, Username, MessageAction: "SUPPRESS", UserAttributes: [{ Name: "email", Value: email }, { Name: "email_verified", Value: "true" }, { Name: "name", Value: "Admin" }] }));
+} catch (e) {
+  if (e.name !== "UsernameExistsException") throw e;
+}
+await idp.send(new AdminSetUserPasswordCommand({ UserPoolId: USER_POOL_ID, Username, Password: ADMIN_PASSWORD, Permanent: true }));
+const adminId = (await idp.send(new AdminGetUserCommand({ UserPoolId: USER_POOL_ID, Username }))).UserAttributes.find((a) => a.Name === "sub").Value;
 const coupons = [
   { code: "GIAM10", type: "percent", value: 10, minOrder: 5_000_000, maxDiscount: 2_000_000, usageLimit: 100 },
   { code: "MOTLAN", type: "fixed", value: 500_000, minOrder: 0, usageLimit: 1 },
@@ -94,8 +96,7 @@ const coupons = [
 const items = [
   ...products,
   ...coupons,
-  { PK: "USER", SK: adminId, _id: adminId, email, name: "Admin", isAdmin: true, passwordHash: await hashPassword(ADMIN_PASSWORD), createdAt: iso(now) },
-  { PK: `EMAIL#${email}`, SK: "-", userId: adminId },
+  { PK: "USER", SK: adminId, _id: adminId, email, name: "Admin", isAdmin: true, createdAt: iso(now) },
 ];
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));

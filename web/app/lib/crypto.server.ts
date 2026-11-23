@@ -1,6 +1,4 @@
 const enc = new TextEncoder();
-export const b64 = (b: ArrayBuffer | Uint8Array) => btoa(String.fromCharCode(...new Uint8Array(b)));
-export const unb64 = (s: string) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
 const hex = (b: ArrayBuffer) => [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join("");
 
 // Constant time compare (DOM lib types hide workerd's timingSafeEqual).
